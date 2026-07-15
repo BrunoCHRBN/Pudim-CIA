@@ -115,12 +115,12 @@ address { font-style: normal; }
     align-items: center;
     gap: 36px;
 }
-.logo-container { display: flex; justify-content: center; }
+.logo-container { display: flex; justify-content: center; overflow: visible; }
 .main-logo {
     display: block;
     margin: 0 auto;
-    width: 250px;
-    max-width: 100%;
+    width: 220px;
+    max-width: 90%;
     height: auto;
     filter: drop-shadow(0 8px 24px rgba(20, 18, 33, 0.07));
 }
@@ -438,11 +438,9 @@ address { font-style: normal; }
 }
 .footer-logo {
     display: block;
-    width: 140px;
+    width: 160px;
     max-width: 100%;
     height: auto;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
 }
 .footer-slogan {
     font-family: var(--font-serif);
