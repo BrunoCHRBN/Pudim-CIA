@@ -168,7 +168,6 @@ button { font-family: inherit; }
 .navbar-logo {
     height: 44px;
     width: auto;
-    mix-blend-mode: multiply;
 }
 .navbar-actions {
     display: flex;
@@ -318,7 +317,6 @@ button { font-family: inherit; }
     width: 240px;
     max-width: 100%;
     height: auto;
-    mix-blend-mode: multiply;
     filter: drop-shadow(0 8px 24px rgba(45, 28, 17, 0.07));
 }
 .hero-slogan {
