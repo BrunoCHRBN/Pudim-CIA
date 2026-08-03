@@ -3,36 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pudim &amp; CIA - Doceria Artesanal. Sabor artesanal em cada detalhe. Encomende pudins classicos, cones trufados e trufas gourmet via WhatsApp.">
+    <meta name="description" content="Pudim &amp; CIA - Doceria Artesanal. Sabor artesanal em cada detalhe. Encomende pudins clássicos, cones trufados e trufas gourmet via WhatsApp.">
     <title>Pudim &amp; CIA - Doceria Artesanal</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Pudim &amp; CIA">
+    <meta property="og:title" content="Pudim &amp; CIA — Doceria Artesanal">
+    <meta property="og:description" content="Acolhimento e sabor artesanal em cada detalhe. Encomende pudins clássicos, cones trufados e trufas gourmet em Araraquara.">
+    <meta property="og:image" content="assets/pudim_classico.png">
+    <meta property="og:locale" content="pt_BR">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pudim &amp; CIA — Doceria Artesanal">
+    <meta name="twitter:description" content="Acolhimento e sabor artesanal em cada detalhe. Encomende via WhatsApp.">
+    <meta name="twitter:image" content="assets/pudim_classico.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Swiper.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
+    <!-- ====================== NAVBAR ====================== -->
+    <nav class="site-navbar" id="site-navbar" data-testid="site-navbar">
+        <div class="container navbar-inner">
+            <a href="#" class="navbar-brand smooth-scroll" data-testid="navbar-brand" aria-label="Pudim &amp; CIA — início">
+                <img src="assets/logo.png" alt="Pudim &amp; CIA" class="navbar-logo" width="120" height="48">
+            </a>
+
+            <div class="navbar-actions">
+                <ul class="navbar-links" id="navbar-links">
+                    <li><a href="#experiencia" class="smooth-scroll" data-testid="nav-link-essencia">Nossa Essência</a></li>
+                    <li><a href="#catalogo" class="smooth-scroll" data-testid="nav-link-especialidades">Especialidades</a></li>
+                    <li>
+                        <a href="https://wa.me/5516991359739?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pudim%20%26%20CIA!"
+                           target="_blank" rel="noopener noreferrer"
+                           class="btn-nav-whatsapp"
+                           data-testid="nav-cta-whatsapp">
+                            <i data-lucide="message-circle"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <button type="button" class="btn-cart-nav" id="btn-cart-nav" data-testid="btn-cart-nav" aria-label="Abrir carrinho">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-badge" id="cart-badge" data-testid="cart-badge" hidden>0</span>
+                </button>
+
+                <button type="button" class="btn-menu-toggle" id="btn-menu-toggle" data-testid="btn-menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="navbar-links">
+                    <i data-lucide="menu" class="icon-menu"></i>
+                    <i data-lucide="x" class="icon-close"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
     <!-- ====================== HERO ====================== -->
-    <header class="hero-section">
+    <header class="hero-section" id="topo">
         <div class="container hero-container">
-
-            <!-- Logo Image -->
-            <div class="logo-container reveal-fade">
-                <img src="assets/logo.png" alt="Pudim &amp; CIA Logo" class="main-logo">
+            <div class="hero-copy">
+                <div class="logo-container reveal-fade">
+                    <img src="assets/logo.png" alt="Pudim &amp; CIA Logo" class="main-logo" width="280" height="112">
+                </div>
+                <p class="hero-slogan reveal-fade delay-1">Acolhimento e Sabor Artesanal<br>em cada detalhe</p>
+                <div class="cta-container reveal-fade delay-2">
+                    <a href="#catalogo" class="btn-hero smooth-scroll" id="hero-cta" data-testid="hero-cta">
+                        <span>Ver Nosso Catálogo</span>
+                        <i data-lucide="arrow-down" class="btn-icon"></i>
+                    </a>
+                </div>
             </div>
-
-            <!-- Slogan: Playfair Display editorial serif -->
-            <p class="hero-slogan reveal-fade delay-1">Acolhimento e Sabor Artesanal<br>em cada detalhe</p>
-
-            <!-- Single Premium CTA -->
-            <div class="cta-container reveal-fade delay-2">
-                <a href="#catalogo" class="btn-hero smooth-scroll" id="hero-cta">
-                    <span>Ver Nosso Catálogo</span>
-                    <i data-lucide="arrow-down" class="btn-icon"></i>
-                </a>
+            <div class="hero-visual reveal-fade delay-1">
+                <div class="hero-frame">
+                    <img src="assets/pudim_classico.png" alt="Pudim Clássico de Leite Moça" class="hero-image" width="640" height="640">
+                </div>
             </div>
-
         </div>
     </header>
 
@@ -44,12 +103,11 @@
                 <h2 class="section-title">Nossa Essência</h2>
             </div>
 
-            <div class="carousel-root reveal-fade delay-1">
-                <div class="carousel-track" id="carousel-track">
-
-                    <article class="carousel-slide">
+            <div class="swiper essence-swiper reveal-fade delay-1" data-testid="essence-carousel">
+                <div class="swiper-wrapper">
+                    <article class="swiper-slide carousel-slide">
                         <div class="carousel-img-wrap">
-                            <img src="assets/pudim_classico.png" alt="Pudim Clássico de Leite Moça" class="carousel-img" loading="lazy">
+                            <img src="assets/pudim_classico.png" alt="Pudim Clássico de Leite Moça" class="carousel-img" width="800" height="600" loading="lazy">
                         </div>
                         <div class="carousel-caption">
                             <h3>Pudim de Leite Moça</h3>
@@ -57,9 +115,9 @@
                         </div>
                     </article>
 
-                    <article class="carousel-slide">
+                    <article class="swiper-slide carousel-slide">
                         <div class="carousel-img-wrap">
-                            <img src="assets/cones_trufados.png" alt="Cones Trufados Variados" class="carousel-img" loading="lazy">
+                            <img src="assets/cones_trufados.png" alt="Cones Trufados Variados" class="carousel-img" width="800" height="600" loading="lazy">
                         </div>
                         <div class="carousel-caption">
                             <h3>Cones Trufados</h3>
@@ -67,9 +125,9 @@
                         </div>
                     </article>
 
-                    <article class="carousel-slide">
+                    <article class="swiper-slide carousel-slide">
                         <div class="carousel-img-wrap">
-                            <img src="assets/caixa_trufas.png" alt="Caixa de Trufas Gourmet" class="carousel-img" loading="lazy">
+                            <img src="assets/caixa_trufas.png" alt="Caixa de Trufas Gourmet" class="carousel-img" width="800" height="600" loading="lazy">
                         </div>
                         <div class="carousel-caption">
                             <h3>Trufas Gourmet</h3>
@@ -77,27 +135,58 @@
                         </div>
                     </article>
 
-                    <article class="carousel-slide">
+                    <article class="swiper-slide carousel-slide">
                         <div class="carousel-img-wrap">
-                            <img src="assets/doceria_ambiente.png" alt="Ambiente acolhedor da Doceria" class="carousel-img" loading="lazy">
+                            <img src="assets/doceria_ambiente.png" alt="Ambiente acolhedor da Doceria" class="carousel-img" width="800" height="600" loading="lazy">
                         </div>
                         <div class="carousel-caption">
                             <h3>Nosso Cantinho</h3>
                             <p>Feito com amor — onde cada aroma conta uma história de afeto, cuidado e aconchego genuíno.</p>
                         </div>
                     </article>
+                </div>
 
-                </div><!-- /carousel-track -->
-
-                <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Slide anterior">
+                <button class="carousel-btn carousel-btn--prev" type="button" aria-label="Slide anterior" data-testid="carousel-prev">
                     <i data-lucide="arrow-left"></i>
                 </button>
-                <button class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Próximo slide">
+                <button class="carousel-btn carousel-btn--next" type="button" aria-label="Próximo slide" data-testid="carousel-next">
                     <i data-lucide="arrow-right"></i>
                 </button>
-                <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Slides"></div>
+                <div class="swiper-pagination" data-testid="carousel-pagination"></div>
+            </div>
+        </div>
+    </section>
 
-            </div><!-- /carousel-root -->
+    <!-- =================== DIFERENCIAIS ==================== -->
+    <section class="pillars-section" id="diferenciais" data-testid="pillars-section">
+        <div class="container">
+            <div class="section-header reveal-fade">
+                <span class="section-tagline">O que nos move</span>
+                <h2 class="section-title">Nossos Diferenciais</h2>
+            </div>
+            <div class="pillars-grid">
+                <article class="pillar-item reveal-fade" data-testid="pillar-feito-no-dia">
+                    <div class="pillar-icon" aria-hidden="true">
+                        <i data-lucide="cake"></i>
+                    </div>
+                    <h3>Feito no dia</h3>
+                    <p>Produção diária para garantir frescor, cremosidade e aquele sabor de receita caseira.</p>
+                </article>
+                <article class="pillar-item reveal-fade delay-1" data-testid="pillar-ingredientes">
+                    <div class="pillar-icon" aria-hidden="true">
+                        <i data-lucide="leaf"></i>
+                    </div>
+                    <h3>Ingredientes selecionados</h3>
+                    <p>Chocolate nobre, leite condensado de qualidade e matérias-primas escolhidas a dedo.</p>
+                </article>
+                <article class="pillar-item reveal-fade delay-2" data-testid="pillar-entrega">
+                    <div class="pillar-icon" aria-hidden="true">
+                        <i data-lucide="bike"></i>
+                    </div>
+                    <h3>Entrega local em Araraquara</h3>
+                    <p>Receba no conforto da sua casa — ou retire na loja com a mesma atenção artesanal.</p>
+                </article>
+            </div>
         </div>
     </section>
 
@@ -110,75 +199,80 @@
             </div>
 
             <div class="products-grid">
-
-                <article class="product-card reveal-fade" data-product="Pudim Clássico" data-price="17.00">
+                <article class="product-card reveal-fade" data-product="Pudim Clássico" data-price="17.00" data-testid="product-card-pudim" tabindex="0" role="button" aria-label="Encomendar Pudim Clássico">
                     <div class="product-img-wrap">
-                        <img src="assets/pudim_classico.png" alt="Pudim Clássico de Leite Moça" class="product-img" loading="lazy">
+                        <img src="assets/pudim_classico.png" alt="Pudim Clássico de Leite Moça" class="product-img" width="600" height="400" loading="lazy">
                     </div>
                     <div class="product-body">
                         <h3 class="product-name">Pudim Clássico</h3>
                         <p class="product-desc">Textura ultra aveludada, calda de caramelo brilhante e o sabor inconfundível do verdadeiro leite condensado.</p>
-                        <span class="product-price">R$&nbsp;17,00</span>
+                        <div class="product-footer">
+                            <span class="product-price">R$&nbsp;17,00</span>
+                            <button type="button" class="btn-encomendar" data-testid="btn-encomendar-pudim">Encomendar</button>
+                        </div>
                     </div>
                 </article>
 
-                <article class="product-card reveal-fade delay-1" data-product="Cones Trufados" data-price="5.00">
+                <article class="product-card reveal-fade delay-1" data-product="Cones Trufados" data-price="5.00" data-testid="product-card-cones" tabindex="0" role="button" aria-label="Encomendar Cones Trufados">
                     <div class="product-img-wrap">
-                        <img src="assets/cones_trufados.png" alt="Cones Trufados Variados" class="product-img" loading="lazy">
+                        <img src="assets/cones_trufados.png" alt="Cones Trufados Variados" class="product-img" width="600" height="400" loading="lazy">
                     </div>
                     <div class="product-body">
                         <h3 class="product-name">Cones Trufados</h3>
                         <p class="product-desc">Cones de wafer crocantes recheados com ganache artesanal cremosa nos sabores Tradicional, Ninho e Nutella.</p>
-                        <span class="product-price">R$&nbsp;5,00</span>
+                        <div class="product-footer">
+                            <span class="product-price">R$&nbsp;5,00</span>
+                            <button type="button" class="btn-encomendar" data-testid="btn-encomendar-cones">Encomendar</button>
+                        </div>
                     </div>
                 </article>
 
-                <article class="product-card reveal-fade delay-2" data-product="Caixa de Trufas Gourmet" data-price="6.00">
+                <article class="product-card reveal-fade delay-2" data-product="Caixa de Trufas Gourmet" data-price="6.00" data-testid="product-card-trufas" tabindex="0" role="button" aria-label="Encomendar Caixa de Trufas Gourmet">
                     <div class="product-img-wrap">
-                        <img src="assets/caixa_trufas.png" alt="Caixa de Trufas Gourmet" class="product-img" loading="lazy">
+                        <img src="assets/caixa_trufas.png" alt="Caixa de Trufas Gourmet" class="product-img" width="600" height="400" loading="lazy">
                     </div>
                     <div class="product-body">
                         <h3 class="product-name">Caixa de Trufas Gourmet</h3>
                         <p class="product-desc">Seleção especial de 6 trufas artesanais com chocolate nobre e recheios cremosos — perfeita para presentear.</p>
-                        <span class="product-price">R$&nbsp;6,00</span>
+                        <div class="product-footer">
+                            <span class="product-price">R$&nbsp;6,00</span>
+                            <button type="button" class="btn-encomendar" data-testid="btn-encomendar-trufas">Encomendar</button>
+                        </div>
                     </div>
                 </article>
-
             </div>
 
-            <!-- Unified WhatsApp CTA -->
             <div class="products-cta reveal-fade delay-3">
                 <p class="products-cta-text">Gostou? Faça seu pedido diretamente pelo WhatsApp — rápido e sem complicação.</p>
-                <a href="https://wa.me/5516991359739?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pudim%20%26%20CIA!" target="_blank" rel="noopener noreferrer" class="btn-whatsapp" id="whatsapp-cta">
+                <a href="https://wa.me/5516991359739?text=Ol%C3%A1!%20Gostaria%20de%20fazer%20um%20pedido%20na%20Pudim%20%26%20CIA!"
+                   target="_blank" rel="noopener noreferrer"
+                   class="btn-whatsapp"
+                   id="whatsapp-cta"
+                   data-testid="whatsapp-cta">
                     <i data-lucide="message-circle" class="btn-icon"></i>
                     <span>Encomendar via WhatsApp</span>
                 </a>
             </div>
-
         </div>
     </section>
 
     <!-- ==================== FOOTER ===================== -->
     <footer class="footer-component">
         <div class="container footer-grid">
-
-            <!-- Col 1: Brand -->
             <div class="footer-brand">
-                <img src="assets/logo.png" alt="Pudim &amp; CIA Logo" class="footer-logo">
+                <img src="assets/logo.png" alt="Pudim &amp; CIA Logo" class="footer-logo" width="160" height="64">
                 <p class="footer-slogan">Sabor que aquece a alma,<br>feito com amor.</p>
             </div>
 
-            <!-- Col 2: Navigation -->
             <div class="footer-col">
                 <h4 class="footer-col-title">Navegação</h4>
                 <ul>
-                    <li><a href="#experiencia" class="smooth-scroll">Nossa Essência</a></li>
-                    <li><a href="#catalogo" class="smooth-scroll">Especialidades</a></li>
-                    <li><a href="#catalogo" class="smooth-scroll">Catálogo Completo</a></li>
+                    <li><a href="#experiencia" class="smooth-scroll" data-testid="footer-link-essencia">Nossa Essência</a></li>
+                    <li><a href="#catalogo" class="smooth-scroll" data-testid="footer-link-especialidades">Especialidades</a></li>
+                    <li><a href="#catalogo" class="smooth-scroll" data-testid="footer-link-catalogo">Catálogo Completo</a></li>
                 </ul>
             </div>
 
-            <!-- Col 3: Address -->
             <div class="footer-col">
                 <h4 class="footer-col-title">Visite-nos</h4>
                 <address class="footer-address">
@@ -189,158 +283,213 @@
                 <p class="footer-hours">Seg–Sex: 9h às 18h<br>Sáb: 9h às 14h</p>
             </div>
 
-            <!-- Col 4: Contact -->
             <div class="footer-col">
                 <h4 class="footer-col-title">Contato</h4>
                 <ul>
                     <li>
-                        <a href="https://wa.me/5516991359739" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/5516991359739" target="_blank" rel="noopener noreferrer" data-testid="footer-whatsapp">
                             <i data-lucide="message-circle" class="footer-icon"></i>
                             <span>WhatsApp</span>
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:contato@pudimecia.com.br">
+                        <a href="mailto:contato@pudimecia.com.br" data-testid="footer-email">
                             <i data-lucide="mail" class="footer-icon"></i>
                             <span>E-mail</span>
                         </a>
                     </li>
                     <li>
-                        <a href="https://instagram.com/pudimecia" target="_blank" rel="noopener noreferrer">
+                        <a href="https://instagram.com/pudimecia" target="_blank" rel="noopener noreferrer" data-testid="footer-instagram">
                             <i data-lucide="instagram" class="footer-icon"></i>
                             <span>@pudimecia</span>
                         </a>
                     </li>
                     <li>
-                        <a href="https://tiktok.com/@pudimecia" target="_blank" rel="noopener noreferrer">
+                        <a href="https://tiktok.com/@pudimecia" target="_blank" rel="noopener noreferrer" data-testid="footer-tiktok">
                             <i data-lucide="video" class="footer-icon"></i>
                             <span>TikTok</span>
                         </a>
                     </li>
                 </ul>
             </div>
-
         </div>
 
         <div class="footer-bottom">
             <div class="container footer-bottom-inner">
                 <p class="copyright">&copy; 2026 Pudim &amp; CIA. Todos os direitos reservados.</p>
-                <a href="#privacidade" class="privacy-link">Política de Privacidade</a>
+                <a href="#privacidade" class="privacy-link" data-testid="privacy-link">Política de Privacidade</a>
             </div>
         </div>
     </footer>
 
-    <!-- ==================== ORDER MODAL ===================== -->
-    <div id="order-modal" class="modal-overlay" aria-hidden="true" role="dialog">
-        <div class="modal-container">
-            <button id="modal-close" class="modal-close-btn" aria-label="Fechar modal">
+    <!-- ==================== ITEM MODAL (Add to Cart) ===================== -->
+    <div id="item-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="item-modal-title" data-testid="item-modal">
+        <div class="modal-container" role="document">
+            <button type="button" id="item-modal-close" class="modal-close-btn" aria-label="Fechar modal" data-testid="item-modal-close">
                 <i data-lucide="x"></i>
             </button>
-            
-            <h3 class="modal-title">Confirmar Encomenda</h3>
-            <p class="modal-subtitle">Você selecionou: <strong id="modal-product-name">...</strong></p>
-            
-            <form id="order-form" class="modal-form" novalidate>
-                <!-- Customer Name -->
-                <div class="form-group">
-                    <label for="client-name">Seu Nome *</label>
-                    <input type="text" id="client-name" name="client-name" required placeholder="Digite seu nome completo">
-                </div>
 
-                <!-- Quantity & Sabor Row -->
+            <div class="modal-section-label">Pedido</div>
+            <h3 class="modal-title" id="item-modal-title">Adicionar ao Carrinho</h3>
+            <p class="modal-subtitle">Você selecionou: <strong id="item-product-name">...</strong></p>
+
+            <form id="item-form" class="modal-form" novalidate>
                 <div class="form-row">
                     <div class="form-group qty-group">
-                        <label for="quantity">Quantidade *</label>
+                        <label for="item-quantity">Quantidade *</label>
                         <div class="qty-selector">
-                            <button type="button" class="qty-btn" id="qty-dec">-</button>
-                            <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" readonly>
-                            <button type="button" class="qty-btn" id="qty-inc">+</button>
+                            <button type="button" class="qty-btn" id="item-qty-dec" data-testid="item-qty-dec" aria-label="Diminuir quantidade">-</button>
+                            <input type="number" id="item-quantity" name="item-quantity" min="1" max="10" value="1" readonly data-testid="item-quantity">
+                            <button type="button" class="qty-btn" id="item-qty-inc" data-testid="item-qty-inc" aria-label="Aumentar quantidade">+</button>
                         </div>
                     </div>
 
                     <div class="form-group sabor-group">
-                        <label for="custom-dropdown-btn">Opção / Sabor *</label>
-                        <div class="custom-dropdown" id="custom-dropdown">
-                            <button type="button" class="custom-dropdown-btn" id="custom-dropdown-btn" aria-haspopup="listbox" aria-expanded="false">
-                                <span id="custom-dropdown-label">Selecione uma opção</span>
-                                <svg class="dropdown-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <label for="item-dropdown-btn">Opção / Sabor *</label>
+                        <div class="custom-dropdown" id="item-dropdown">
+                            <button type="button" class="custom-dropdown-btn" id="item-dropdown-btn" aria-haspopup="listbox" aria-expanded="false" data-testid="item-dropdown-btn">
+                                <span id="item-dropdown-label">Selecione uma opção</span>
+                                <svg class="dropdown-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path d="M6 8L10 12L14 8" stroke="#C68B59" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
-                            <div class="custom-dropdown-menu" id="custom-dropdown-menu" role="listbox" aria-labelledby="custom-dropdown-btn">
-                                <!-- Dynamic options list inserted via JS -->
-                            </div>
-                            <input type="hidden" id="product-option" name="product-option" required>
+                            <div class="custom-dropdown-menu" id="item-dropdown-menu" role="listbox" aria-labelledby="item-dropdown-btn" data-testid="item-dropdown-menu"></div>
+                            <input type="hidden" id="item-option" name="item-option" required>
                         </div>
+                        <span class="field-error" id="item-option-error" data-testid="item-option-error"></span>
                     </div>
                 </div>
 
-                <!-- Observações -->
                 <div class="form-group">
-                    <label for="observations">Observações (Opcional)</label>
-                    <textarea id="observations" name="observations" rows="2" placeholder="Ex: Sem calda extra, embalagem para presente, etc."></textarea>
+                    <label for="item-observations">Observações (Opcional)</label>
+                    <textarea id="item-observations" name="item-observations" rows="2" placeholder="Ex: Sem calda extra, embalagem para presente, etc." data-testid="item-observations"></textarea>
                 </div>
 
-                <!-- Total price live update -->
+                <div class="modal-total-bar">
+                    <span>Subtotal:</span>
+                    <strong id="item-total-price" data-testid="item-total-price">R$ 0,00</strong>
+                </div>
+
+                <button type="submit" class="btn-submit-order" id="btn-add-to-cart" data-testid="btn-add-to-cart">
+                    <span>Adicionar ao Carrinho</span>
+                    <i data-lucide="shopping-bag" class="btn-icon"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== CART DRAWER ===================== -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay" aria-hidden="true" data-testid="cart-drawer-overlay"></div>
+    <aside id="cart-drawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" data-testid="cart-drawer">
+        <div class="cart-drawer-header">
+            <h3 id="cart-drawer-title">Seu Carrinho</h3>
+            <button type="button" class="modal-close-btn" id="cart-drawer-close" aria-label="Fechar carrinho" data-testid="cart-drawer-close">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="cart-drawer-body" id="cart-items" data-testid="cart-items">
+            <!-- Items injected by JS -->
+        </div>
+        <div class="cart-drawer-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal</span>
+                <strong id="cart-subtotal" data-testid="cart-subtotal">R$ 0,00</strong>
+            </div>
+            <button type="button" class="btn-submit-order" id="btn-checkout" data-testid="btn-checkout" disabled>
+                <span>Finalizar Pedido</span>
+                <i data-lucide="arrow-right" class="btn-icon"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- ==================== CHECKOUT MODAL ===================== -->
+    <div id="checkout-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title" data-testid="checkout-modal">
+        <div class="modal-container modal-container--checkout" role="document">
+            <button type="button" id="checkout-modal-close" class="modal-close-btn" aria-label="Fechar modal" data-testid="checkout-modal-close">
+                <i data-lucide="x"></i>
+            </button>
+
+            <h3 class="modal-title" id="checkout-modal-title">Finalizar Pedido</h3>
+            <p class="modal-subtitle">Revise os dados e envie sua encomenda pelo WhatsApp.</p>
+
+            <form id="checkout-form" class="modal-form" novalidate>
+                <!-- Cliente -->
+                <div class="modal-section">
+                    <div class="modal-section-label">Cliente</div>
+                    <div class="form-group">
+                        <label for="client-name">Seu Nome *</label>
+                        <input type="text" id="client-name" name="client-name" required placeholder="Digite seu nome completo" data-testid="client-name" autocomplete="name">
+                        <span class="field-error" id="client-name-error" data-testid="client-name-error"></span>
+                    </div>
+                </div>
+
+                <!-- Entrega -->
+                <div class="modal-section">
+                    <div class="modal-section-label">Entrega</div>
+                    <div class="form-group">
+                        <label>Como deseja receber? *</label>
+                        <div class="btn-toggle-group" id="delivery-method-group" data-testid="delivery-method-group">
+                            <button type="button" class="btn-toggle active" data-value="entrega" data-testid="delivery-entrega">
+                                <i data-lucide="bike"></i>
+                                <span>Entrega</span>
+                            </button>
+                            <button type="button" class="btn-toggle" data-value="retirada" data-testid="delivery-retirada">
+                                <i data-lucide="shopping-bag"></i>
+                                <span>Retirar na Loja</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="delivery-method" name="delivery-method" value="entrega">
+                    </div>
+
+                    <div class="form-group" id="address-field-group">
+                        <label for="delivery-address">Endereço Completo de Entrega *</label>
+                        <input type="text" id="delivery-address" name="delivery-address" placeholder="Rua, número, bairro, apto..." data-testid="delivery-address" autocomplete="street-address">
+                        <span class="field-error" id="delivery-address-error" data-testid="delivery-address-error"></span>
+                    </div>
+                </div>
+
+                <!-- Pagamento -->
+                <div class="modal-section">
+                    <div class="modal-section-label">Pagamento</div>
+                    <div class="form-group">
+                        <label>Forma de Pagamento *</label>
+                        <div class="btn-toggle-group" id="payment-method-group" data-testid="payment-method-group">
+                            <button type="button" class="btn-toggle active" data-value="pix" data-testid="payment-pix">
+                                <span>Pix</span>
+                            </button>
+                            <button type="button" class="btn-toggle" data-value="cartao" data-testid="payment-cartao">
+                                <span>Cartão</span>
+                            </button>
+                            <button type="button" class="btn-toggle" data-value="dinheiro" data-testid="payment-dinheiro">
+                                <span>Dinheiro</span>
+                            </button>
+                        </div>
+                        <input type="hidden" id="payment-method" name="payment-method" value="pix">
+                    </div>
+
+                    <div class="form-group" id="change-field-group" hidden>
+                        <label for="change-amount">Troco para quanto? (Opcional)</label>
+                        <input type="text" id="change-amount" name="change-amount" placeholder="Ex: R$ 50,00" data-testid="change-amount">
+                    </div>
+
+                    <div class="pix-area" id="pix-area" data-testid="pix-area">
+                        <p class="pix-info">Copie o código abaixo para pagar via Pix Copia e Cola:</p>
+                        <p class="pix-placeholder-notice" id="pix-placeholder-notice" data-testid="pix-placeholder-notice">
+                            Pix em configuração — confirme o pagamento pelo WhatsApp
+                        </p>
+                        <button type="button" class="btn-pix-copy" id="btn-pix-copy" data-testid="btn-pix-copy">
+                            <i data-lucide="copy" class="copy-icon"></i>
+                            <span id="btn-pix-text">Copiar código Pix Copia e Cola</span>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="modal-total-bar">
                     <span>Valor Total:</span>
-                    <strong id="modal-total-price">R$ 0,00</strong>
+                    <strong id="checkout-total-price" data-testid="checkout-total-price">R$ 0,00</strong>
                 </div>
 
-                <!-- Delivery Method -->
-                <div class="form-group">
-                    <label>Como deseja receber? *</label>
-                    <div class="btn-toggle-group" id="delivery-method-group">
-                        <button type="button" class="btn-toggle active" data-value="entrega">
-                            <span>🛵 Entrega (Delivery)</span>
-                        </button>
-                        <button type="button" class="btn-toggle" data-value="retirada">
-                            <span>🛍️ Retirar na Loja</span>
-                        </button>
-                    </div>
-                    <input type="hidden" id="delivery-method" name="delivery-method" value="entrega">
-                </div>
-
-                <!-- Address -->
-                <div class="form-group" id="address-field-group">
-                    <label for="delivery-address">Endereço Completo de Entrega *</label>
-                    <input type="text" id="delivery-address" name="delivery-address" placeholder="Rua, número, bairro, apto...">
-                </div>
-
-                <!-- Payment Method -->
-                <div class="form-group">
-                    <label>Forma de Pagamento *</label>
-                    <div class="btn-toggle-group" id="payment-method-group">
-                        <button type="button" class="btn-toggle active" data-value="pix">
-                            <span>Pix</span>
-                        </button>
-                        <button type="button" class="btn-toggle" data-value="cartao">
-                            <span>Cartão</span>
-                        </button>
-                        <button type="button" class="btn-toggle" data-value="dinheiro">
-                            <span>Dinheiro</span>
-                        </button>
-                    </div>
-                    <input type="hidden" id="payment-method" name="payment-method" value="pix">
-                </div>
-
-                <!-- Troco Field -->
-                <div class="form-group" id="change-field-group" style="display: none;">
-                    <label for="change-amount">Troco para quanto? (Opcional)</label>
-                    <input type="text" id="change-amount" name="change-amount" placeholder="Ex: R$ 50,00">
-                </div>
-
-                <!-- Pix Copy and Paste Area -->
-                <div class="pix-area" id="pix-area">
-                    <p class="pix-info">Copie o código abaixo para pagar via Pix Copia e Cola:</p>
-                    <button type="button" class="btn-pix-copy" id="btn-pix-copy">
-                        <i data-lucide="copy" class="copy-icon"></i>
-                        <span id="btn-pix-text">Copiar código Pix Copia e Cola</span>
-                    </button>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn-submit-order" id="btn-submit-order">
+                <button type="submit" class="btn-submit-order" id="btn-submit-order" data-testid="btn-submit-order">
                     <span>Enviar Pedido</span>
                     <i data-lucide="send" class="btn-icon"></i>
                 </button>
@@ -348,6 +497,19 @@
         </div>
     </div>
 
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/5516991359739?text=Ol%C3%A1!%20Gostaria%20de%20falar%20com%20a%20Pudim%20%26%20CIA!"
+       class="fab-whatsapp"
+       id="fab-whatsapp"
+       data-testid="fab-whatsapp"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Fale conosco no WhatsApp">
+        <i data-lucide="message-circle"></i>
+        <span class="fab-tooltip">Fale conosco</span>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
