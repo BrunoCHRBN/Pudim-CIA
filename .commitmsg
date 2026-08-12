@@ -1,6 +1,0 @@
-feat(ag-01): finalize Next.js foundation, styles structure and Vitest test suite
-
-- Reorganize stylesheet into src/styles/globals.css and update layout.tsx
-- Add Vitest test framework and unit test suite in tests/ for formatters and Pix generator
-- Add npm scripts: lint, typecheck, test, build
-- All verification commands (lint, typecheck, test, build) pass clean
