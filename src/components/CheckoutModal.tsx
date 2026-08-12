@@ -4,20 +4,20 @@ import React, { useState, useEffect } from 'react';
 import { X, Bike, ShoppingBag, Copy, Send, Loader2 } from 'lucide-react';
 import {
   CartItem,
+  Product,
+  BusinessSettings,
   DeliveryMethod,
   PaymentMethod,
-  PIX_KEY,
-  PIX_BENEFICIARY,
-  PIX_CITY,
-  WHATSAPP_PHONE,
   NAME_STORAGE_KEY,
-} from '@/types';
-import { formatBRL } from '@/lib/formatters';
+} from '@/types/domain';
+import { formatCentsToBRL } from '@/lib/formatters';
 import { generatePixEMV } from '@/lib/pix';
 
 interface CheckoutModalProps {
   isOpen: boolean;
   cart: CartItem[];
+  products: Product[];
+  settings: BusinessSettings;
   onClose: () => void;
   onClearCart: () => void;
 }
@@ -25,6 +25,8 @@ interface CheckoutModalProps {
 export function CheckoutModal({
   isOpen,
   cart,
+  products,
+  settings,
   onClose,
   onClearCart,
 }: CheckoutModalProps) {
@@ -39,7 +41,7 @@ export function CheckoutModal({
   const [isCopying, setIsCopying] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const totalCents = cart.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
 
   useEffect(() => {
     if (isOpen) {
@@ -66,7 +68,12 @@ export function CheckoutModal({
   if (!isOpen) return null;
 
   const handleCopyPix = () => {
-    const pixCode = generatePixEMV(PIX_KEY, PIX_BENEFICIARY, PIX_CITY, total);
+    const pixCode = generatePixEMV(
+      settings.pixKey,
+      settings.pixBeneficiary,
+      settings.pixCity,
+      totalCents
+    );
     navigator.clipboard
       .writeText(pixCode)
       .then(() => {
@@ -99,7 +106,7 @@ export function CheckoutModal({
 
     setIsSubmitting(true);
 
-    const totalStr = formatBRL(total);
+    const totalStr = formatCentsToBRL(totalCents);
     const emojiDetalhes = '\uD83C\uDF6E';
     const emojiCliente = '\uD83D\uDC64';
     const emojiEntrega = '\uD83D\uDEF5';
@@ -122,13 +129,19 @@ export function CheckoutModal({
       })`;
     }
 
-    let msg = `Olá, Pudim & Cia! Gostaria de fazer um pedido através do site:\n\n`;
+    let msg = `Olá, ${settings.storeName}! Gostaria de fazer um pedido através do site:\n\n`;
     msg += `${emojiDetalhes} *DETALHES DO PEDIDO*\n`;
     cart.forEach((item, idx) => {
-      msg += `\n*Item ${idx + 1}:* ${item.product}\n`;
-      msg += `*Quantidade:* ${item.qty}x\n`;
-      msg += `*Opção/Sabor:* ${item.option}\n`;
-      msg += `*Subtotal:* ${formatBRL(item.price * item.qty)}\n`;
+      const product = products.find((p) => p.id === item.productId);
+      const variant = product?.variants.find((v) => v.id === item.variantId);
+      const productName = product?.name || 'Produto';
+      const variantName = variant?.name || 'Padrão';
+      const subtotalCents = item.priceCents * item.quantity;
+
+      msg += `\n*Item ${idx + 1}:* ${productName}\n`;
+      msg += `*Quantidade:* ${item.quantity}x\n`;
+      msg += `*Opção/Sabor:* ${variantName}\n`;
+      msg += `*Subtotal:* ${formatCentsToBRL(subtotalCents)}\n`;
       if (item.observations) {
         msg += `*Obs. do item:* ${item.observations}\n`;
       }
@@ -148,11 +161,16 @@ export function CheckoutModal({
     msg += `*Forma:* ${paymentMethodStr}\n`;
 
     if (paymentMethod === 'pix') {
-      const pixCode = generatePixEMV(PIX_KEY, PIX_BENEFICIARY, PIX_CITY, total);
+      const pixCode = generatePixEMV(
+        settings.pixKey,
+        settings.pixBeneficiary,
+        settings.pixCity,
+        totalCents
+      );
       msg += `\n---\n${emojiPix} *CÓDIGO PIX COPIA E COLA*\n${pixCode}`;
     }
 
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${settings.whatsappPhone}&text=${encodeURIComponent(
       msg
     )}`;
 
@@ -373,7 +391,7 @@ export function CheckoutModal({
                   <span id="btn-pix-text">
                     {isCopying
                       ? '✓ Copiado!'
-                      : `Copiar código Pix Copia e Cola (${formatBRL(total)})`}
+                      : `Copiar código Pix Copia e Cola (${formatCentsToBRL(totalCents)})`}
                   </span>
                 </button>
               </div>
@@ -383,7 +401,7 @@ export function CheckoutModal({
           <div className="modal-total-bar">
             <span>Valor Total:</span>
             <strong id="checkout-total-price" data-testid="checkout-total-price">
-              {formatBRL(total)}
+              {formatCentsToBRL(totalCents)}
             </strong>
           </div>
 

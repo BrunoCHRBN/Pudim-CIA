@@ -1,51 +1,199 @@
-export interface MockProduct {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  options: string[];
-  image: string;
-  alt: string;
-  testId: string;
-  btnTestId: string;
-  delayClass: string;
-}
+import { Product, Category, BusinessSettings } from '@/types/domain';
 
-export const MOCK_PRODUCTS: MockProduct[] = [
+export const DEFAULT_BUSINESS_SETTINGS: BusinessSettings = {
+  id: 'settings_default',
+  storeName: 'Pudim & CIA',
+  whatsappPhone: '5516991359739',
+  pixKey: 'suachave@email.com',
+  pixBeneficiary: 'Pudim e Cia',
+  pixCity: 'Araraquara',
+  minOrderCents: 0,
+  isAcceptingOrders: true,
+  deliveryFeeCents: 0,
+  updatedAt: '2026-08-12T00:00:00.000Z',
+};
+
+export const MOCK_CATEGORIES: Category[] = [
   {
-    id: 'pudim-classico',
+    id: 'cat_especialidades',
+    name: 'Especialidades',
+    slug: 'especialidades',
+    displayOrder: 1,
+    createdAt: '2026-08-12T00:00:00.000Z',
+    updatedAt: '2026-08-12T00:00:00.000Z',
+  },
+];
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: 'prod_pudim_classico',
+    categoryId: 'cat_especialidades',
     name: 'Pudim Clássico',
-    price: 17.00,
+    slug: 'pudim-classico',
     description: 'Textura ultra aveludada, calda de caramelo brilhante e o sabor inconfundível do verdadeiro leite condensado.',
-    options: ['Tradicional de Leite Moça'],
-    image: '/assets/pudim_classico.png',
-    alt: 'Pudim Clássico de Leite Moça',
-    testId: 'product-card-pudim',
-    btnTestId: 'btn-encomendar-pudim',
-    delayClass: '',
+    priceCents: 1700, // R$ 17,00
+    status: 'published',
+    isFeatured: true,
+    displayOrder: 1,
+    images: [
+      {
+        id: 'img_pudim_1',
+        productId: 'prod_pudim_classico',
+        url: '/assets/pudim_classico.png',
+        alt: 'Pudim Clássico de Leite Moça',
+        displayOrder: 1,
+        isPrimary: true,
+      },
+    ],
+    variants: [
+      {
+        id: 'var_pudim_tradicional',
+        productId: 'prod_pudim_classico',
+        name: 'Tradicional de Leite Moça',
+        sku: 'PUD-TRAD-001',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 1,
+      },
+    ],
+    createdAt: '2026-08-12T00:00:00.000Z',
+    updatedAt: '2026-08-12T00:00:00.000Z',
   },
   {
-    id: 'cones-trufados',
+    id: 'prod_cones_trufados',
+    categoryId: 'cat_especialidades',
     name: 'Cones Trufados',
-    price: 5.00,
+    slug: 'cones-trufados',
     description: 'Cones de wafer crocantes recheados com ganache artesanal cremosa nos sabores Tradicional, Ninho e Nutella.',
-    options: ['Chocolate Tradicional', 'Ninho com Nutella', 'Misto'],
-    image: '/assets/cones_trufados.png',
-    alt: 'Cones Trufados Variados',
-    testId: 'product-card-cones',
-    btnTestId: 'btn-encomendar-cones',
-    delayClass: 'delay-1',
+    priceCents: 500, // R$ 5,00
+    status: 'published',
+    isFeatured: true,
+    displayOrder: 2,
+    images: [
+      {
+        id: 'img_cones_1',
+        productId: 'prod_cones_trufados',
+        url: '/assets/cones_trufados.png',
+        alt: 'Cones Trufados Variados',
+        displayOrder: 1,
+        isPrimary: true,
+      },
+    ],
+    variants: [
+      {
+        id: 'var_cone_tradicional',
+        productId: 'prod_cones_trufados',
+        name: 'Chocolate Tradicional',
+        sku: 'CONE-TRAD-001',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 1,
+      },
+      {
+        id: 'var_cone_ninho_nutella',
+        productId: 'prod_cones_trufados',
+        name: 'Ninho com Nutella',
+        sku: 'CONE-NINH-002',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 2,
+      },
+      {
+        id: 'var_cone_misto',
+        productId: 'prod_cones_trufados',
+        name: 'Misto',
+        sku: 'CONE-MIST-003',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 3,
+      },
+    ],
+    createdAt: '2026-08-12T00:00:00.000Z',
+    updatedAt: '2026-08-12T00:00:00.000Z',
   },
   {
-    id: 'trufas-gourmet',
+    id: 'prod_caixa_trufas',
+    categoryId: 'cat_especialidades',
     name: 'Caixa de Trufas Gourmet',
-    price: 6.00,
+    slug: 'caixa-trufas-gourmet',
     description: 'Seleção especial de 6 trufas artesanais com chocolate nobre e recheios cremosos — perfeita para presentear.',
-    options: ['Ao Leite', 'Meio Amargo', 'Sensação', 'Maracujá', 'Sortido'],
-    image: '/assets/caixa_trufas.png',
-    alt: 'Caixa de Trufas Gourmet',
-    testId: 'product-card-trufas',
-    btnTestId: 'btn-encomendar-trufas',
-    delayClass: 'delay-2',
+    priceCents: 600, // R$ 6,00
+    status: 'published',
+    isFeatured: true,
+    displayOrder: 3,
+    images: [
+      {
+        id: 'img_trufas_1',
+        productId: 'prod_caixa_trufas',
+        url: '/assets/caixa_trufas.png',
+        alt: 'Caixa de Trufas Gourmet',
+        displayOrder: 1,
+        isPrimary: true,
+      },
+    ],
+    variants: [
+      {
+        id: 'var_trufa_ao_leite',
+        productId: 'prod_caixa_trufas',
+        name: 'Ao Leite',
+        sku: 'TRUF-LEIT-001',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 1,
+      },
+      {
+        id: 'var_trufa_meio_amargo',
+        productId: 'prod_caixa_trufas',
+        name: 'Meio Amargo',
+        sku: 'TRUF-AMAR-002',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 2,
+      },
+      {
+        id: 'var_trufa_sensacao',
+        productId: 'prod_caixa_trufas',
+        name: 'Sensação',
+        sku: 'TRUF-SENS-003',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 3,
+      },
+      {
+        id: 'var_trufa_maracuja',
+        productId: 'prod_caixa_trufas',
+        name: 'Maracujá',
+        sku: 'TRUF-MARA-004',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 4,
+      },
+      {
+        id: 'var_trufa_sortido',
+        productId: 'prod_caixa_trufas',
+        name: 'Sortido',
+        sku: 'TRUF-SORT-005',
+        priceAdjustmentCents: 0,
+        isAvailable: true,
+        displayOrder: 5,
+      },
+    ],
+    createdAt: '2026-08-12T00:00:00.000Z',
+    updatedAt: '2026-08-12T00:00:00.000Z',
+  },
+  {
+    id: 'prod_pudim_rascunho_teste',
+    categoryId: 'cat_especialidades',
+    name: 'Pudim de Pistache (Em Breve)',
+    slug: 'pudim-pistache-draft',
+    description: 'Edição limitada em desenvolvimento com favas de pistache siciliano.',
+    priceCents: 2500,
+    status: 'draft',
+    isFeatured: false,
+    displayOrder: 4,
+    images: [],
+    variants: [],
+    createdAt: '2026-08-12T00:00:00.000Z',
+    updatedAt: '2026-08-12T00:00:00.000Z',
   },
 ];

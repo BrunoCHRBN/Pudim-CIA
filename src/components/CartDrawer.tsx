@@ -2,12 +2,13 @@
 
 import React, { useEffect } from 'react';
 import { X, ArrowRight } from 'lucide-react';
-import { CartItem } from '@/types';
-import { formatBRL } from '@/lib/formatters';
+import { CartItem, Product } from '@/types/domain';
+import { formatCentsToBRL } from '@/lib/formatters';
 
 interface CartDrawerProps {
   isOpen: boolean;
   cart: CartItem[];
+  products: Product[];
   onClose: () => void;
   onUpdateQty: (id: string, delta: number) => void;
   onRemoveItem: (id: string) => void;
@@ -17,12 +18,13 @@ interface CartDrawerProps {
 export function CartDrawer({
   isOpen,
   cart,
+  products,
   onClose,
   onUpdateQty,
   onRemoveItem,
   onOpenCheckout,
 }: CartDrawerProps) {
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const totalCents = cart.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -77,55 +79,63 @@ export function CartDrawer({
               Escolha uma especialidade para começar.
             </p>
           ) : (
-            cart.map((item) => (
-              <div
-                key={item.id}
-                className="cart-item"
-                data-id={item.id}
-                data-testid={`cart-item-${item.id}`}
-              >
-                <div className="cart-item-info">
-                  <h4>{item.product}</h4>
-                  <p>
-                    {item.option}
-                    {item.observations ? ` · ${item.observations}` : ''}
-                  </p>
-                </div>
-                <div className="cart-item-price">{formatBRL(item.price * item.qty)}</div>
-                <div className="cart-item-actions">
-                  <div className="cart-item-qty">
+            cart.map((item) => {
+              const product = products.find((p) => p.id === item.productId);
+              const variant = product?.variants.find((v) => v.id === item.variantId);
+              const productName = product?.name || 'Produto';
+              const variantName = variant?.name || 'Padrão';
+              const itemTotalCents = item.priceCents * item.quantity;
+
+              return (
+                <div
+                  key={item.id}
+                  className="cart-item"
+                  data-id={item.id}
+                  data-testid={`cart-item-${item.id}`}
+                >
+                  <div className="cart-item-info">
+                    <h4>{productName}</h4>
+                    <p>
+                      {variantName}
+                      {item.observations ? ` · ${item.observations}` : ''}
+                    </p>
+                  </div>
+                  <div className="cart-item-price">{formatCentsToBRL(itemTotalCents)}</div>
+                  <div className="cart-item-actions">
+                    <div className="cart-item-qty">
+                      <button
+                        type="button"
+                        data-action="dec"
+                        data-testid={`cart-dec-${item.id}`}
+                        aria-label="Diminuir"
+                        onClick={() => onUpdateQty(item.id, -1)}
+                      >
+                        −
+                      </button>
+                      <span data-testid={`cart-qty-${item.id}`}>{item.quantity}</span>
+                      <button
+                        type="button"
+                        data-action="inc"
+                        data-testid={`cart-inc-${item.id}`}
+                        aria-label="Aumentar"
+                        onClick={() => onUpdateQty(item.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
                     <button
                       type="button"
-                      data-action="dec"
-                      data-testid={`cart-dec-${item.id}`}
-                      aria-label="Diminuir"
-                      onClick={() => onUpdateQty(item.id, -1)}
+                      className="cart-item-remove"
+                      data-action="remove"
+                      data-testid={`cart-remove-${item.id}`}
+                      onClick={() => onRemoveItem(item.id)}
                     >
-                      −
-                    </button>
-                    <span data-testid={`cart-qty-${item.id}`}>{item.qty}</span>
-                    <button
-                      type="button"
-                      data-action="inc"
-                      data-testid={`cart-inc-${item.id}`}
-                      aria-label="Aumentar"
-                      onClick={() => onUpdateQty(item.id, 1)}
-                    >
-                      +
+                      Remover
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    className="cart-item-remove"
-                    data-action="remove"
-                    data-testid={`cart-remove-${item.id}`}
-                    onClick={() => onRemoveItem(item.id)}
-                  >
-                    Remover
-                  </button>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
@@ -133,7 +143,7 @@ export function CartDrawer({
           <div className="cart-subtotal">
             <span>Subtotal</span>
             <strong id="cart-subtotal" data-testid="cart-subtotal">
-              {formatBRL(total)}
+              {formatCentsToBRL(totalCents)}
             </strong>
           </div>
           <button

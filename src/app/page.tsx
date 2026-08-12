@@ -11,13 +11,13 @@ import { FabWhatsApp } from '@/components/FabWhatsApp';
 import { ItemModal } from '@/components/ItemModal';
 import { CartDrawer } from '@/components/CartDrawer';
 import { CheckoutModal } from '@/components/CheckoutModal';
-import { CartItem, CART_STORAGE_KEY } from '@/types';
+import { CartItem, CART_STORAGE_KEY } from '@/types/domain';
+import { MOCK_PRODUCTS, DEFAULT_BUSINESS_SETTINGS } from '@/mocks/products';
 
 export default function HomePage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
-  const [itemModalProduct, setItemModalProduct] = useState('');
-  const [itemModalPrice, setItemModalPrice] = useState(0);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
@@ -45,17 +45,16 @@ export default function HomePage() {
     }
   };
 
-  const handleOpenItemModal = (productName: string, price: number) => {
-    setItemModalProduct(productName);
-    setItemModalPrice(price);
+  const handleOpenItemModal = (productId: string) => {
+    setSelectedProductId(productId);
     setIsItemModalOpen(true);
   };
 
   const handleAddToCart = (newItem: Omit<CartItem, 'id'>) => {
     const existingIndex = cart.findIndex(
       (item) =>
-        item.product === newItem.product &&
-        item.option === newItem.option &&
+        item.productId === newItem.productId &&
+        item.variantId === newItem.variantId &&
         item.observations === newItem.observations
     );
 
@@ -66,7 +65,7 @@ export default function HomePage() {
       if (existing) {
         updatedCart[existingIndex] = {
           ...existing,
-          qty: Math.min(10, existing.qty + newItem.qty),
+          quantity: Math.min(10, existing.quantity + newItem.quantity),
         };
       }
     } else {
@@ -82,9 +81,9 @@ export default function HomePage() {
     const updated = cart
       .map((item) => {
         if (item.id === id) {
-          const newQty = item.qty + delta;
+          const newQty = item.quantity + delta;
           if (newQty < 1) return null;
-          return { ...item, qty: Math.min(10, newQty) };
+          return { ...item, quantity: Math.min(10, newQty) };
         }
         return item;
       })
@@ -102,7 +101,7 @@ export default function HomePage() {
     saveCart([]);
   };
 
-  const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const isAnyOverlayOpen = isItemModalOpen || isCartDrawerOpen || isCheckoutModalOpen;
 
   // Manage body scroll lock
@@ -121,15 +120,15 @@ export default function HomePage() {
         <Hero />
         <EssenceCarousel isOverlayOpen={isAnyOverlayOpen} />
         <Pillars />
-        <ProductCatalog onOpenItemModal={handleOpenItemModal} />
+        <ProductCatalog products={MOCK_PRODUCTS} onOpenItemModal={handleOpenItemModal} />
       </main>
       <Footer />
       <FabWhatsApp />
 
       <ItemModal
         isOpen={isItemModalOpen}
-        productName={itemModalProduct}
-        initialPrice={itemModalPrice}
+        productId={selectedProductId}
+        products={MOCK_PRODUCTS}
         onClose={() => setIsItemModalOpen(false)}
         onAddToCart={handleAddToCart}
       />
@@ -137,6 +136,7 @@ export default function HomePage() {
       <CartDrawer
         isOpen={isCartDrawerOpen}
         cart={cart}
+        products={MOCK_PRODUCTS}
         onClose={() => setIsCartDrawerOpen(false)}
         onUpdateQty={handleUpdateQty}
         onRemoveItem={handleRemoveItem}
@@ -146,6 +146,8 @@ export default function HomePage() {
       <CheckoutModal
         isOpen={isCheckoutModalOpen}
         cart={cart}
+        products={MOCK_PRODUCTS}
+        settings={DEFAULT_BUSINESS_SETTINGS}
         onClose={() => setIsCheckoutModalOpen(false)}
         onClearCart={handleClearCart}
       />

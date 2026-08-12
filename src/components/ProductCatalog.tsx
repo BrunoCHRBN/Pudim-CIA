@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
-import { MOCK_PRODUCTS } from '@/mocks/products';
+import { Product } from '@/types/domain';
 import { ProductGrid } from '@/components/ProductGrid';
 import { ProductsCTA } from '@/components/ProductsCTA';
 
 interface ProductCatalogProps {
-  onOpenItemModal: (productName: string, price: number) => void;
+  products: Product[];
+  onOpenItemModal: (productId: string) => void;
 }
 
-export function ProductCatalog({ onOpenItemModal }: ProductCatalogProps) {
+export function ProductCatalog({ products, onOpenItemModal }: ProductCatalogProps) {
   return (
     <section className="products-section" id="catalogo">
       <div className="container">
@@ -18,7 +19,7 @@ export function ProductCatalog({ onOpenItemModal }: ProductCatalogProps) {
           <h2 className="section-title">Nossas Especialidades</h2>
         </div>
 
-        <ProductGrid products={MOCK_PRODUCTS} onOpenModal={onOpenItemModal} />
+        <ProductGrid products={products} onOpenModal={onOpenItemModal} />
         <ProductsCTA />
       </div>
     </section>

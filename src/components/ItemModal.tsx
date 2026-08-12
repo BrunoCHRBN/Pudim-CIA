@@ -2,26 +2,26 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
-import { PRODUCT_CONFIG, CartItem } from '@/types';
-import { formatBRL } from '@/lib/formatters';
+import { Product, CartItem } from '@/types/domain';
+import { formatCentsToBRL } from '@/lib/formatters';
 
 interface ItemModalProps {
   isOpen: boolean;
-  productName: string;
-  initialPrice: number;
+  productId: string | null;
+  products: Product[];
   onClose: () => void;
   onAddToCart: (item: Omit<CartItem, 'id'>) => void;
 }
 
 export function ItemModal({
   isOpen,
-  productName,
-  initialPrice,
+  productId,
+  products,
   onClose,
   onAddToCart,
 }: ItemModalProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedVariantId, setSelectedVariantId] = useState('');
   const [observations, setObservations] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -29,23 +29,26 @@ export function ItemModal({
   const modalRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const product = PRODUCT_CONFIG[productName];
-  const options = product?.options || [];
-  const currentPrice = product?.price || initialPrice;
-  const totalPrice = quantity * currentPrice;
+  const product = products.find((p) => p.id === productId);
+  const variants = product?.variants || [];
+  const selectedVariant = variants.find((v) => v.id === selectedVariantId) || variants[0];
+
+  const unitPriceCents =
+    (product?.priceCents || 0) + (selectedVariant?.priceAdjustmentCents || 0);
+  const totalPriceCents = quantity * unitPriceCents;
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && product) {
       setQuantity(1);
       setObservations('');
       setErrorMsg('');
       setIsDropdownOpen(false);
-      const opts = PRODUCT_CONFIG[productName]?.options || [];
-      if (opts.length > 0) {
-        setSelectedOption(opts[0] ?? '');
+      const availableVariants = product.variants.filter((v) => v.isAvailable);
+      if (availableVariants.length > 0) {
+        setSelectedVariantId(availableVariants[0]?.id || '');
       }
     }
-  }, [isOpen, productName]);
+  }, [isOpen, product]);
 
   // Click outside custom dropdown
   useEffect(() => {
@@ -75,16 +78,16 @@ export function ItemModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedOption) {
+    if (!selectedVariantId || !selectedVariant) {
       setErrorMsg('Selecione uma opção de sabor.');
       return;
     }
 
     onAddToCart({
-      product: productName,
-      price: currentPrice,
-      qty: quantity,
-      option: selectedOption,
+      productId: product.id,
+      variantId: selectedVariant.id,
+      priceCents: unitPriceCents,
+      quantity,
       observations: observations.trim(),
     });
 
@@ -121,7 +124,7 @@ export function ItemModal({
           Adicionar ao Carrinho
         </h3>
         <p className="modal-subtitle">
-          Você selecionou: <strong id="item-product-name">{productName}</strong>
+          Você selecionou: <strong id="item-product-name">{product.name}</strong>
         </p>
 
         <form id="item-form" className="modal-form" onSubmit={handleSubmit} noValidate>
@@ -182,7 +185,7 @@ export function ItemModal({
                   }}
                 >
                   <span id="item-dropdown-label">
-                    {selectedOption || 'Selecione uma opção'}
+                    {selectedVariant?.name || 'Selecione uma opção'}
                   </span>
                   <svg
                     className="dropdown-chevron"
@@ -207,24 +210,30 @@ export function ItemModal({
                   aria-labelledby="item-dropdown-btn"
                   data-testid="item-dropdown-menu"
                 >
-                  {options.map((opt) => (
+                  {variants.map((v) => (
                     <div
-                      key={opt}
+                      key={v.id}
                       className={`custom-dropdown-item ${
-                        selectedOption === opt ? 'selected' : ''
+                        selectedVariantId === v.id ? 'selected' : ''
                       }`}
                       role="option"
-                      aria-selected={selectedOption === opt}
-                      data-value={opt}
-                      data-testid={`item-option-${opt}`}
+                      aria-selected={selectedVariantId === v.id}
+                      data-value={v.name}
+                      data-variant-id={v.id}
+                      data-testid={`item-option-${v.name}`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedOption(opt);
+                        setSelectedVariantId(v.id);
                         setErrorMsg('');
                         setIsDropdownOpen(false);
                       }}
                     >
-                      <span>{opt}</span>
+                      <span>
+                        {v.name}
+                        {v.priceAdjustmentCents !== 0
+                          ? ` (${formatCentsToBRL(v.priceAdjustmentCents)})`
+                          : ''}
+                      </span>
                       <svg
                         className="check-icon"
                         viewBox="0 0 24 24"
@@ -268,7 +277,7 @@ export function ItemModal({
           <div className="modal-total-bar">
             <span>Subtotal:</span>
             <strong id="item-total-price" data-testid="item-total-price">
-              {formatBRL(totalPrice)}
+              {formatCentsToBRL(totalPriceCents)}
             </strong>
           </div>
 
