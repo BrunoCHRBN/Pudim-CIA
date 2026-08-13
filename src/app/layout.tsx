@@ -5,7 +5,7 @@ import "@/styles/globals.css";
 const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-serif",
+  variable: "--font-playfair",
   weight: ["400", "600", "700"],
   style: ["normal", "italic"],
 });
@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-sans",
+  variable: "--font-jakarta",
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 

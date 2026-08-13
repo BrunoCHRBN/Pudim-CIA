@@ -52,13 +52,13 @@ function AdminLoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md p-8 bg-[#1e1713] border border-[#3d2f26] rounded-2xl shadow-2xl backdrop-blur-md">
+    <div data-testid="admin-login-card" className="w-full max-w-md p-8 bg-[#1e1713] border border-[#3d2f26] rounded-2xl shadow-2xl backdrop-blur-md">
       {/* Brand Header */}
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#d9822b]/10 border border-[#d9822b]/30 mb-4">
           <ShieldCheck className="w-7 h-7 text-[#d9822b]" />
         </div>
-        <h1 className="text-2xl font-bold font-serif text-[#f4efe8]">Pudim & CIA</h1>
+        <h1 data-testid="admin-login-title" className="text-2xl font-bold font-serif text-[#f4efe8]">Pudim & CIA</h1>
         <p className="text-sm text-[#b8a698] mt-1">Autenticação Administrativa</p>
       </div>
 
@@ -66,6 +66,7 @@ function AdminLoginForm() {
       {errorMsg && (
         <div
           id="login-error-alert"
+          data-testid="admin-login-error-alert"
           className="mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-200 text-sm flex items-start gap-3"
         >
           <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
@@ -76,13 +77,14 @@ function AdminLoginForm() {
       {/* Login Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-[#b8a698] mb-2">
+          <label htmlFor="admin-email-input" className="block text-xs font-semibold uppercase tracking-wider text-[#b8a698] mb-2">
             E-mail Administrativo
           </label>
           <div className="relative">
             <Mail className="w-5 h-5 text-[#8c786a] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               id="admin-email-input"
+              data-testid="admin-email-input"
               type="email"
               required
               value={email}
@@ -94,13 +96,14 @@ function AdminLoginForm() {
         </div>
 
         <div>
-          <label htmlFor="password font-semibold" className="block text-xs font-semibold uppercase tracking-wider text-[#b8a698] mb-2">
+          <label htmlFor="admin-password-input" className="block text-xs font-semibold uppercase tracking-wider text-[#b8a698] mb-2">
             Senha
           </label>
           <div className="relative">
             <Lock className="w-5 h-5 text-[#8c786a] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               id="admin-password-input"
+              data-testid="admin-password-input"
               type="password"
               required
               value={password}
@@ -113,6 +116,7 @@ function AdminLoginForm() {
 
         <button
           id="admin-login-submit-btn"
+          data-testid="admin-login-submit-button"
           type="submit"
           disabled={loading}
           className="w-full py-3.5 px-4 bg-gradient-to-r from-[#d9822b] to-[#b36317] hover:from-[#e58e35] hover:to-[#c46f1f] text-white font-semibold rounded-xl shadow-lg hover:shadow-orange-950/40 transition-all flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
@@ -143,7 +147,10 @@ function AdminLoginForm() {
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#2a1d15] via-[#140d0a] to-[#090604]">
+    <div
+      data-testid="admin-login-page"
+      className="min-h-screen flex items-center justify-center p-4 bg-[#090604] bg-[radial-gradient(ellipse_at_top,#2a1d15_0%,#140d0a_52%,#090604_100%)]"
+    >
       <Suspense fallback={
         <div className="text-[#b8a698] flex items-center gap-2">
           <Loader2 className="w-5 h-5 animate-spin text-[#d9822b]" />

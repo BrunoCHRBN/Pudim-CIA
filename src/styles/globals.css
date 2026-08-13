@@ -1,3 +1,4 @@
+@import 'tailwindcss';
 @import 'swiper/css';
 @import 'swiper/css/navigation';
 @import 'swiper/css/pagination';
@@ -34,8 +35,8 @@
     --muted:          var(--text-secondary);
     --muted-dark:     #3D2A1C;
 
-    --font-serif:     var(--font-serif), 'Playfair Display', Georgia, serif;
-    --font-sans:      var(--font-sans), 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-serif:     var(--font-playfair), Georgia, serif;
+    --font-sans:      var(--font-jakarta), system-ui, sans-serif;
 
     --radius-sm:      10px;
     --radius-md:      16px;
@@ -52,6 +53,7 @@
 }
 
 /* ── Reset ───────────────────────────────────────────────── */
+@layer base {
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
     scroll-behavior: smooth;
@@ -89,6 +91,8 @@ a {
 }
 address { font-style: normal; }
 button { font-family: inherit; }
+}
+
 .logo-blend { mix-blend-mode: multiply; }
 
 /* ── Layout Helpers ──────────────────────────────────────── */

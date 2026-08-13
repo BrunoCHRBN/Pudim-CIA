@@ -13,17 +13,32 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+
     async function loadData() {
       setLoading(true);
-      const [sData, pData] = await Promise.all([
-        fetchAdminStats(),
-        fetchAdminProducts('all'),
-      ]);
-      setStats(sData);
-      setRecentProducts(pData.slice(0, 5));
-      setLoading(false);
+      try {
+        const [sData, pData] = await Promise.all([
+          fetchAdminStats(),
+          fetchAdminProducts('all'),
+        ]);
+        if (!active) return;
+        setStats(sData);
+        setRecentProducts(pData.slice(0, 5));
+      } catch {
+        if (!active) return;
+        setStats({ publishedProducts: 0, draftProducts: 0, archivedProducts: 0, totalCategories: 0 });
+        setRecentProducts([]);
+      } finally {
+        if (active) setLoading(false);
+      }
     }
+
     loadData();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   if (loading) {
