@@ -7,6 +7,46 @@ export interface AuthResult {
   profile?: Profile;
 }
 
+export function validateAdminPasswordReset(password: string, confirmation: string): string | null {
+  if (password.length < 8) {
+    return 'A nova senha deve ter pelo menos 8 caracteres.';
+  }
+
+  if (password !== confirmation) {
+    return 'As senhas informadas não coincidem.';
+  }
+
+  return null;
+}
+
+export async function requestAdminPasswordReset(email: string): Promise<AuthResult> {
+  const supabase = createClient();
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const siteUrl = (configuredSiteUrl || window.location.origin).replace(/\/$/, '');
+  const redirectTo = `${siteUrl}/auth/callback?next=${encodeURIComponent('/admin/reset-password')}`;
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+    redirectTo,
+  });
+
+  if (error) {
+    return { error: 'Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes.' };
+  }
+
+  return { success: true };
+}
+
+export async function updateAdminPassword(password: string): Promise<AuthResult> {
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    return { error: 'Não foi possível atualizar a senha. Solicite um novo link de recuperação.' };
+  }
+
+  return { success: true };
+}
+
 export async function signInAdmin(email: string, password: string): Promise<AuthResult> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   // Dev-only fallback: bypass Supabase when not configured (never runs in production)

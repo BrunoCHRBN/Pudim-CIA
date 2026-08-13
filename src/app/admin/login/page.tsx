@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signInAdmin } from '@/lib/auth';
-import { Lock, Mail, AlertCircle, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
+import { Lock, Mail, AlertCircle, ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
 
 function AdminLoginForm() {
   const router = useRouter();
@@ -13,11 +14,18 @@ function AdminLoginForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const errorParam = searchParams.get('error');
     if (errorParam === 'unauthorized') {
       setErrorMsg('Acesso não autorizado. Sua conta não possui privilégios de administrador ativo.');
+    } else if (errorParam === 'recovery') {
+      setErrorMsg('O link de recuperação é inválido ou expirou. Solicite um novo link.');
+    }
+
+    if (searchParams.get('password') === 'updated') {
+      setSuccessMsg('Senha atualizada. Entre novamente com a nova senha.');
     }
   }, [searchParams]);
 
@@ -74,6 +82,13 @@ function AdminLoginForm() {
         </div>
       )}
 
+      {successMsg && (
+        <div className="mb-6 p-4 rounded-admin-card bg-status-success/10 border border-status-success/30 text-status-success text-sm flex items-start gap-3">
+          <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+          <span>{successMsg}</span>
+        </div>
+      )}
+
       {/* Login Form */}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -92,6 +107,14 @@ function AdminLoginForm() {
               placeholder="admin@pudimecia.com.br"
               className="w-full pl-11 pr-4 py-3 bg-admin-bg border border-admin-border-strong rounded-admin-input text-admin-text placeholder-admin-text-muted focus:outline-none focus:border-admin-accent focus:ring-1 focus:ring-admin-accent transition-all text-sm"
             />
+          </div>
+          <div className="mt-2 text-right">
+            <Link
+              href="/admin/forgot-password"
+              className="text-xs font-medium text-admin-accent hover:text-admin-accent-hover transition-colors"
+            >
+              Esqueci minha senha
+            </Link>
           </div>
         </div>
 

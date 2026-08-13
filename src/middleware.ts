@@ -8,8 +8,12 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  // Only protect /admin routes (excluding /admin/login)
-  if (!path.startsWith('/admin') || path.startsWith('/admin/login')) {
+  // Only protect private /admin routes. Login and recovery request stay public.
+  if (
+    !path.startsWith('/admin') ||
+    path === '/admin/login' ||
+    path === '/admin/forgot-password'
+  ) {
     return supabaseResponse;
   }
 
