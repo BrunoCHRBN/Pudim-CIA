@@ -71,9 +71,9 @@ export default function AdminSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center text-[#b8a698]">
+      <div className="min-h-[60vh] flex items-center justify-center text-admin-text-secondary">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin text-[#d9822b]" />
+          <Loader2 className="w-6 h-6 animate-spin text-admin-accent" />
           <span>Carregando configurações...</span>
         </div>
       </div>
@@ -81,23 +81,24 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto p-6 md:p-8 space-y-6">
+    <main data-testid="admin-settings-page" className="max-w-4xl mx-auto p-6 md:p-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#f4efe8]">
+        <h1 className="text-2xl md:text-3xl font-serif font-bold text-admin-text">
           Configurações da Loja
         </h1>
-        <p className="text-sm text-[#b8a698]">
+        <p className="text-sm text-admin-text-secondary">
           Defina chave PIX, número de contato WhatsApp, taxas de entrega e disponibilidade de atendimento.
         </p>
       </div>
 
       {notification && (
         <div
-          className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${
+          data-testid="settings-notification"
+          className={`p-4 rounded-admin-card text-sm font-medium flex items-center gap-2 transition-all ${
             notification.type === 'success'
-              ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50'
-              : 'bg-red-950/40 text-red-300 border border-red-800/50'
+              ? 'bg-status-success/10 text-status-success border border-status-success/30'
+              : 'bg-status-danger/10 text-status-danger border border-status-danger/30'
           }`}
         >
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -107,15 +108,15 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Store Operating Status Banner */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className={`p-3 rounded-xl border ${isAcceptingOrders ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-red-500/10 border-red-500/30 text-red-400'}`}>
+              <div className={`p-3 rounded-admin-card border ${isAcceptingOrders ? 'bg-status-success/10 border-status-success/30 text-status-success' : 'bg-status-danger/10 border-status-danger/30 text-status-danger'}`}>
                 <Store className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-lg font-serif font-bold text-[#f4efe8]">Status de Atendimento</h2>
-                <p className="text-xs text-[#8c786a]">
+                <h2 className="text-lg font-serif font-bold text-admin-text">Status de Atendimento</h2>
+                <p className="text-xs text-admin-text-muted">
                   {isAcceptingOrders ? 'A loja está aberta para receber novos pedidos.' : 'A loja está temporariamente fechada para novos pedidos.'}
                 </p>
               </div>
@@ -123,45 +124,48 @@ export default function AdminSettingsPage() {
 
             <label className="relative inline-flex items-center cursor-pointer">
               <input
+                data-testid="settings-accepting-orders-checkbox"
                 type="checkbox"
                 checked={isAcceptingOrders}
                 onChange={(e) => setIsAcceptingOrders(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="w-14 h-7 bg-[#241c16] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-emerald-600"></div>
+              <div className="w-14 h-7 bg-admin-surface-hover peer-focus:outline-none rounded-admin-badge peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-admin-badge after:h-6 after:w-6 after:transition-all peer-checked:bg-status-success"></div>
             </label>
           </div>
         </section>
 
         {/* Section 1: Store Details */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3 flex items-center gap-2">
-            <Store className="w-5 h-5 text-[#d9822b]" /> Identificação da Loja
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3 flex items-center gap-2">
+            <Store className="w-5 h-5 text-admin-accent" /> Identificação da Loja
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Nome do Estabelecimento *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Nome do Estabelecimento *</label>
               <input
+                data-testid="settings-store-name-input"
                 type="text"
                 required
                 value={storeName}
                 onChange={(e) => setStoreName(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">WhatsApp de Atendimento *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">WhatsApp de Atendimento *</label>
               <div className="relative">
-                <Phone className="w-4 h-4 text-[#8c786a] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Phone className="w-4 h-4 text-admin-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
+                  data-testid="settings-whatsapp-input"
                   type="text"
                   required
                   placeholder="5516991359739"
                   value={whatsappPhone}
                   onChange={(e) => setWhatsappPhone(e.target.value)}
-                  className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] pl-10 pr-3 py-3 rounded-xl text-sm font-mono focus:outline-none"
+                  className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text pl-10 pr-3 py-3 rounded-admin-input text-sm font-mono focus:outline-none"
                 />
               </div>
             </div>
@@ -169,83 +173,88 @@ export default function AdminSettingsPage() {
         </section>
 
         {/* Section 2: PIX Settings */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3 flex items-center gap-2">
-            <QrCode className="w-5 h-5 text-[#d9822b]" /> Configurações de Pagamento PIX
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3 flex items-center gap-2">
+            <QrCode className="w-5 h-5 text-admin-accent" /> Configurações de Pagamento PIX
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Chave PIX *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Chave PIX *</label>
               <input
+                data-testid="settings-pix-key-input"
                 type="text"
                 required
                 placeholder="ex: CPF, Email ou Chave Aleatória"
                 value={pixKey}
                 onChange={(e) => setPixKey(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm font-mono focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm font-mono focus:outline-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Nome do Beneficiário *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Nome do Beneficiário *</label>
               <input
+                data-testid="settings-pix-beneficiary-input"
                 type="text"
                 required
                 placeholder="Pudim e Cia"
                 value={pixBeneficiary}
                 onChange={(e) => setPixBeneficiary(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Cidade do Beneficiário *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Cidade do Beneficiário *</label>
               <input
+                data-testid="settings-pix-city-input"
                 type="text"
                 required
                 placeholder="Araraquara"
                 value={pixCity}
                 onChange={(e) => setPixCity(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
           </div>
         </section>
 
         {/* Section 3: Financial & Delivery Fees */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3 flex items-center gap-2">
-            <DollarSign className="w-5 h-5 text-[#d9822b]" /> Regras Financeiras e Taxas
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3 flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-admin-accent" /> Regras Financeiras e Taxas
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Valor Mínimo de Pedido (R$)</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Valor Mínimo de Pedido (R$)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[#8c786a] font-bold">R$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-admin-text-muted font-bold">R$</span>
                 <input
+                  data-testid="settings-min-order-input"
                   type="number"
                   step="0.01"
                   min="0"
                   value={minOrder}
                   onChange={(e) => setMinOrder(e.target.value)}
-                  className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] pl-10 pr-3 py-3 rounded-xl text-sm font-bold focus:outline-none"
+                  className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text pl-10 pr-3 py-3 rounded-admin-input text-sm font-bold focus:outline-none"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Taxa Fixa de Entrega (R$)</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Taxa Fixa de Entrega (R$)</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[#8c786a] font-bold">R$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-admin-text-muted font-bold">R$</span>
                 <input
+                  data-testid="settings-delivery-fee-input"
                   type="number"
                   step="0.01"
                   min="0"
                   value={deliveryFee}
                   onChange={(e) => setDeliveryFee(e.target.value)}
-                  className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] pl-10 pr-3 py-3 rounded-xl text-sm font-bold focus:outline-none"
+                  className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text pl-10 pr-3 py-3 rounded-admin-input text-sm font-bold focus:outline-none"
                 />
               </div>
             </div>
@@ -256,8 +265,9 @@ export default function AdminSettingsPage() {
         <div className="flex justify-end pt-2">
           <button
             type="submit"
+            data-testid="settings-submit-button"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-[#d9822b] hover:bg-[#c2711e] text-white font-semibold rounded-xl text-sm transition-all shadow-md shadow-[#d9822b]/20 cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold rounded-admin-button text-sm transition-all shadow-md shadow-admin-accent/20 cursor-pointer disabled:opacity-50"
           >
             {saving ? (
               <>

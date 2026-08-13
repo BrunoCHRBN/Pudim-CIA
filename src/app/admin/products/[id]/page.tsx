@@ -200,9 +200,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center text-[#b8a698]">
+      <div className="min-h-[60vh] flex items-center justify-center text-admin-text-secondary">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin text-[#d9822b]" />
+          <Loader2 className="w-6 h-6 animate-spin text-admin-accent" />
           <span>Carregando dados do produto...</span>
         </div>
       </div>
@@ -210,21 +210,22 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   }
 
   return (
-    <main className="max-w-4xl mx-auto p-6 md:p-8 space-y-6">
+    <main data-testid="admin-edit-product-page" className="max-w-4xl mx-auto p-6 md:p-8 space-y-6">
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link
             href="/admin/products"
-            className="p-2.5 bg-[#1e1713] hover:bg-[#241c16] text-[#e6dad0] border border-[#3d2f26] rounded-xl transition-all"
+            data-testid="edit-product-back-link"
+            className="p-2.5 bg-admin-surface-raised hover:bg-admin-surface-hover text-admin-text-secondary border border-admin-border-strong rounded-admin-button transition-all"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#f4efe8]">
+            <h1 className="text-2xl md:text-3xl font-serif font-bold text-admin-text">
               Editar Produto
             </h1>
-            <p className="text-xs text-[#8c786a] font-mono mt-0.5">ID: {id}</p>
+            <p className="text-xs text-admin-text-muted font-mono mt-0.5">ID: {id}</p>
           </div>
         </div>
 
@@ -232,10 +233,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           <button
             type="button"
             onClick={handleDuplicate}
+            data-testid="edit-product-duplicate-button"
             disabled={saving}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#241c16] hover:bg-[#2d231c] text-[#e6dad0] border border-[#3d2f26] rounded-xl text-xs font-semibold transition-all cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-admin-surface-hover hover:bg-admin-border text-admin-text-secondary border border-admin-border-strong rounded-admin-button text-xs font-semibold transition-all cursor-pointer disabled:opacity-50"
           >
-            <Copy className="w-4 h-4 text-[#d9822b]" />
+            <Copy className="w-4 h-4 text-admin-accent" />
             <span>Duplicar</span>
           </button>
         </div>
@@ -243,10 +245,11 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
       {notification && (
         <div
-          className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${
+          data-testid="edit-product-notification"
+          className={`p-4 rounded-admin-card text-sm font-medium flex items-center gap-2 transition-all ${
             notification.type === 'success'
-              ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50'
-              : 'bg-red-950/40 text-red-300 border border-red-800/50'
+              ? 'bg-status-success/10 text-status-success border border-status-success/30'
+              : 'bg-status-danger/10 text-status-danger border border-status-danger/30'
           }`}
         >
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -255,40 +258,42 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       )}
 
       {error && (
-        <div className="p-4 rounded-xl bg-red-950/40 text-red-300 border border-red-800/50 text-sm flex items-center gap-2">
+        <div data-testid="edit-product-error-alert" className="p-4 rounded-admin-card bg-status-danger/10 text-status-danger border border-status-danger/30 text-sm flex items-center gap-2">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form data-testid="edit-product-form" onSubmit={handleSubmit} className="space-y-6">
         {/* Section 1: Basic Information */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3">
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3">
             Informações Básicas
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Nome */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Nome do Produto *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Nome do Produto *</label>
               <input
+                data-testid="edit-product-name-input"
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
 
             {/* Slug */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Slug (URL)</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Slug (URL)</label>
               <input
+                data-testid="edit-product-slug-input"
                 type="text"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm font-mono focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm font-mono focus:outline-none"
               />
             </div>
           </div>
@@ -296,28 +301,30 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Preço */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Preço (R$) *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Preço (R$) *</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[#8c786a] font-bold">R$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-admin-text-muted font-bold">R$</span>
                 <input
+                  data-testid="edit-product-price-input"
                   type="number"
                   step="0.01"
                   min="0"
                   required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] pl-10 pr-3 py-3 rounded-xl text-sm font-bold focus:outline-none"
+                  className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text pl-10 pr-3 py-3 rounded-admin-input text-sm font-bold focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Categoria */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Categoria *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Categoria *</label>
               <select
+                data-testid="edit-product-category-select"
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               >
                 {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>
@@ -329,11 +336,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
             {/* Status */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Status *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Status *</label>
               <select
+                data-testid="edit-product-status-select"
                 value={status}
                 onChange={(e) => setStatus(e.target.value as ProductStatus)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm font-semibold focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm font-semibold focus:outline-none"
               >
                 <option value="published">Publicado</option>
                 <option value="draft">Rascunho</option>
@@ -345,70 +353,74 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           {/* Featured Checkbox */}
           <div className="flex items-center gap-3 pt-2">
             <input
+              data-testid="edit-product-featured-checkbox"
               type="checkbox"
               id="isFeatured"
               checked={isFeatured}
               onChange={(e) => setIsFeatured(e.target.checked)}
-              className="w-4 h-4 rounded accent-[#d9822b] cursor-pointer"
+              className="w-4 h-4 rounded-admin-input accent-admin-accent cursor-pointer"
             />
-            <label htmlFor="isFeatured" className="text-sm font-medium text-[#e6dad0] cursor-pointer">
+            <label htmlFor="isFeatured" className="text-sm font-medium text-admin-text-secondary cursor-pointer">
               Marcar como produto em destaque na página inicial
             </label>
           </div>
         </section>
 
         {/* Section 2: Descriptions */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3">
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3">
             Descrições
           </h2>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase text-[#8c786a]">Descrição Curta</label>
+            <label className="text-xs font-semibold uppercase text-admin-text-muted">Descrição Curta</label>
             <input
+              data-testid="edit-product-short-description-input"
               type="text"
               value={shortDescription}
               onChange={(e) => setShortDescription(e.target.value)}
-              className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+              className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase text-[#8c786a]">Descrição Completa</label>
+            <label className="text-xs font-semibold uppercase text-admin-text-muted">Descrição Completa</label>
             <textarea
+              data-testid="edit-product-description-textarea"
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none resize-none"
+              className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none resize-none"
             />
           </div>
         </section>
 
         {/* Section 3: Image Upload */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8] border-b border-[#2d231c] pb-3 flex items-center justify-between">
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text border-b border-admin-border pb-3 flex items-center justify-between">
             <span>Imagem do Produto</span>
-            <span className="text-xs font-normal text-[#8c786a]">Supabase Storage</span>
+            <span className="text-xs font-normal text-admin-text-muted">Supabase Storage</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold uppercase text-[#8c786a]">Upload de Arquivo</label>
-                <label className="flex flex-col items-center justify-center border-2 border-dashed border-[#3d2f26] hover:border-[#d9822b] rounded-2xl p-4 cursor-pointer bg-[#140e0b] transition-all text-center">
+                <label className="text-xs font-semibold uppercase text-admin-text-muted">Upload de Arquivo</label>
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-admin-border-strong hover:border-admin-accent rounded-admin-panel p-4 cursor-pointer bg-admin-bg transition-all text-center">
                   {uploadingImage ? (
-                    <div className="flex items-center gap-2 text-[#d9822b] py-2">
+                    <div className="flex items-center gap-2 text-admin-accent py-2">
                       <Loader2 className="w-5 h-5 animate-spin" />
                       <span className="text-xs font-semibold">Enviando para Supabase Storage...</span>
                     </div>
                   ) : (
                     <>
-                      <Upload className="w-6 h-6 text-[#d9822b] mb-1" />
-                      <span className="text-xs font-semibold text-[#f4efe8]">Clique para alterar imagem</span>
-                      <span className="text-[10px] text-[#8c786a]">PNG, JPG, WEBP até 5MB</span>
+                      <Upload className="w-6 h-6 text-admin-accent mb-1" />
+                      <span className="text-xs font-semibold text-admin-text">Clique para alterar imagem</span>
+                      <span className="text-[10px] text-admin-text-muted">PNG, JPG, WEBP até 5MB</span>
                     </>
                   )}
                   <input
+                    data-testid="edit-product-image-file-input"
                     type="file"
                     accept="image/*"
                     onChange={handleImageFileUpload}
@@ -419,24 +431,25 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold uppercase text-[#8c786a]">Ou URL Externa</label>
+                <label className="text-xs font-semibold uppercase text-admin-text-muted">Ou URL Externa</label>
                 <input
+                  data-testid="edit-product-image-url-input"
                   type="url"
                   placeholder="https://..."
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                  className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Pré-visualização</label>
-              <div className="h-44 rounded-2xl bg-[#140e0b] border border-[#3d2f26] overflow-hidden flex items-center justify-center relative">
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Pré-visualização</label>
+              <div className="h-44 rounded-admin-panel bg-admin-bg border border-admin-border-strong overflow-hidden flex items-center justify-center relative">
                 {imageUrl ? (
                   <img src={imageUrl} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="text-center text-[#8c786a] space-y-1">
+                  <div className="text-center text-admin-text-muted space-y-1">
                     <ImageIcon className="w-8 h-8 mx-auto opacity-50" />
                     <p className="text-xs">Nenhuma imagem selecionada</p>
                   </div>
@@ -447,17 +460,18 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         </section>
 
         {/* Section 4: Product Variants */}
-        <section className="bg-[#1e1713] border border-[#3d2f26] p-6 rounded-2xl space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-[#2d231c] pb-3">
+        <section className="bg-admin-surface-raised border border-admin-border-strong p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <div className="flex items-center justify-between border-b border-admin-border pb-3">
             <div>
-              <h2 className="text-lg font-serif font-bold text-[#f4efe8]">Variantes do Produto</h2>
-              <p className="text-xs text-[#8c786a]">Sabores, tamanhos ou opções adicionais</p>
+              <h2 className="text-lg font-serif font-bold text-admin-text">Variantes do Produto</h2>
+              <p className="text-xs text-admin-text-muted">Sabores, tamanhos ou opções adicionais</p>
             </div>
 
             <button
               type="button"
               onClick={handleAddVariant}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#241c16] hover:bg-[#2d231c] text-[#d9822b] border border-[#3d2f26] rounded-xl text-xs font-semibold transition-all cursor-pointer"
+              data-testid="edit-product-add-variant-button"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-admin-surface-hover hover:bg-admin-border text-admin-accent border border-admin-border-strong rounded-admin-button text-xs font-semibold transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" />
               <span>Adicionar Variante</span>
@@ -465,45 +479,49 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </div>
 
           {variants.length === 0 ? (
-            <p className="text-xs text-[#8c786a] italic text-center py-4">
+            <p className="text-xs text-admin-text-muted italic text-center py-4">
               Nenhuma variante cadastrada.
             </p>
           ) : (
             <div className="space-y-3">
               {variants.map((v, idx) => (
-                <div key={idx} className="bg-[#140e0b] border border-[#3d2f26] p-4 rounded-xl grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                <div key={idx} className="bg-admin-bg border border-admin-border-strong p-4 rounded-admin-card grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
                   <input
+                    data-testid={`edit-product-variant-name-${idx}`}
                     type="text"
                     placeholder="Nome"
                     value={v.name}
                     onChange={(e) => handleVariantChange(idx, 'name', e.target.value)}
-                    className="bg-[#1e1713] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-2.5 rounded-lg text-xs"
+                    className="bg-admin-surface-raised border border-admin-border-strong focus:border-admin-accent text-admin-text p-2.5 rounded-admin-input text-xs"
                   />
                   <input
+                    data-testid={`edit-product-variant-sku-${idx}`}
                     type="text"
                     placeholder="SKU"
                     value={v.sku}
                     onChange={(e) => handleVariantChange(idx, 'sku', e.target.value)}
-                    className="bg-[#1e1713] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-2.5 rounded-lg text-xs font-mono"
+                    className="bg-admin-surface-raised border border-admin-border-strong focus:border-admin-accent text-admin-text p-2.5 rounded-admin-input text-xs font-mono"
                   />
                   <div className="relative">
-                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-[#8c786a]">+R$</span>
+                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-admin-text-muted">+R$</span>
                     <input
+                      data-testid={`edit-product-variant-price-${idx}`}
                       type="number"
                       step="0.01"
                       placeholder="0.00"
                       value={v.priceAdjustment}
                       onChange={(e) => handleVariantChange(idx, 'priceAdjustment', e.target.value)}
-                      className="bg-[#1e1713] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] pl-10 pr-2.5 py-2.5 rounded-lg text-xs w-full"
+                      className="bg-admin-surface-raised border border-admin-border-strong focus:border-admin-accent text-admin-text pl-10 pr-2.5 py-2.5 rounded-admin-input text-xs w-full"
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <label className="flex items-center gap-1.5 text-xs text-[#e6dad0] cursor-pointer">
+                    <label className="flex items-center gap-1.5 text-xs text-admin-text-secondary cursor-pointer">
                       <input
+                        data-testid={`edit-product-variant-available-${idx}`}
                         type="checkbox"
                         checked={v.isAvailable}
                         onChange={(e) => handleVariantChange(idx, 'isAvailable', e.target.checked)}
-                        className="accent-[#d9822b]"
+                        className="accent-admin-accent"
                       />
                       <span>Disponível</span>
                     </label>
@@ -511,7 +529,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                     <button
                       type="button"
                       onClick={() => handleRemoveVariant(idx)}
-                      className="p-1.5 text-red-400 hover:bg-red-950/40 rounded-lg transition-all cursor-pointer"
+                      data-testid={`edit-product-remove-variant-${idx}`}
+                      className="p-1.5 text-status-danger hover:bg-status-danger/10 rounded-admin-button transition-all cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -526,7 +545,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         <div className="flex items-center justify-end gap-4 pt-4">
           <Link
             href="/admin/products"
-            className="px-5 py-3 bg-[#1e1713] hover:bg-[#241c16] text-[#e6dad0] border border-[#3d2f26] rounded-xl text-sm font-semibold transition-all"
+            data-testid="edit-product-cancel-link"
+            className="px-5 py-3 bg-admin-surface-raised hover:bg-admin-surface-hover text-admin-text-secondary border border-admin-border-strong rounded-admin-button text-sm font-semibold transition-all"
           >
             Voltar
           </Link>
@@ -534,7 +554,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-[#d9822b] hover:bg-[#c2711e] text-white font-semibold rounded-xl text-sm transition-all shadow-md shadow-[#d9822b]/20 cursor-pointer disabled:opacity-50"
+            data-testid="edit-product-submit-button"
+            className="flex items-center gap-2 px-6 py-3 bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold rounded-admin-button text-sm transition-all shadow-md shadow-admin-accent/20 cursor-pointer disabled:opacity-50"
           >
             {saving ? (
               <>

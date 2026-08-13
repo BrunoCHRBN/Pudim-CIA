@@ -109,21 +109,22 @@ export default function AdminCategoriesPage() {
   };
 
   return (
-    <main className="max-w-6xl mx-auto p-6 md:p-8 space-y-6">
+    <main data-testid="admin-categories-page" className="max-w-6xl mx-auto p-6 md:p-8 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-serif font-bold text-[#f4efe8]">
+          <h1 className="text-2xl md:text-3xl font-serif font-bold text-admin-text">
             Gestão de Categorias
           </h1>
-          <p className="text-sm text-[#b8a698]">
+          <p className="text-sm text-admin-text-secondary">
             Organize as categorias para os produtos da doceria.
           </p>
         </div>
 
         <button
           onClick={() => setIsCreating(!isCreating)}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#d9822b] hover:bg-[#c2711e] text-white font-semibold rounded-xl text-sm transition-all shadow-md shadow-[#d9822b]/20 cursor-pointer shrink-0"
+          data-testid="categories-create-toggle-button"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold rounded-admin-button text-sm transition-all shadow-md shadow-admin-accent/20 cursor-pointer shrink-0"
         >
           {isCreating ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           <span>{isCreating ? 'Cancelar' : 'Nova Categoria'}</span>
@@ -132,10 +133,11 @@ export default function AdminCategoriesPage() {
 
       {notification && (
         <div
-          className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${
+          data-testid="categories-notification"
+          className={`p-4 rounded-admin-card text-sm font-medium flex items-center gap-2 transition-all ${
             notification.type === 'success'
-              ? 'bg-emerald-950/40 text-emerald-300 border border-emerald-800/50'
-              : 'bg-red-950/40 text-red-300 border border-red-800/50'
+              ? 'bg-status-success/10 text-status-success border border-status-success/30'
+              : 'bg-status-danger/10 text-status-danger border border-status-danger/30'
           }`}
         >
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -145,12 +147,13 @@ export default function AdminCategoriesPage() {
 
       {/* New Category Form Card */}
       {isCreating && (
-        <form onSubmit={handleCreateSubmit} className="bg-[#1e1713] border border-[#d9822b]/40 p-6 rounded-2xl space-y-4 shadow-xl">
-          <h2 className="text-lg font-serif font-bold text-[#f4efe8]">Cadastrar Nova Categoria</h2>
+        <form data-testid="category-create-form" onSubmit={handleCreateSubmit} className="bg-admin-surface-raised border border-admin-accent/40 p-6 rounded-admin-panel space-y-4 shadow-xl">
+          <h2 className="text-lg font-serif font-bold text-admin-text">Cadastrar Nova Categoria</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Nome *</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Nome *</label>
               <input
+                data-testid="category-create-name-input"
                 type="text"
                 required
                 placeholder="Ex: Especialidades"
@@ -159,47 +162,51 @@ export default function AdminCategoriesPage() {
                   setNewName(e.target.value);
                   if (!newSlug) setNewSlug(generateSlug(e.target.value));
                 }}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Slug (URL)</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Slug (URL)</label>
               <input
+                data-testid="category-create-slug-input"
                 type="text"
                 placeholder="ex: especialidades"
                 value={newSlug}
                 onChange={(e) => setNewSlug(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm font-mono focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm font-mono focus:outline-none"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase text-[#8c786a]">Ordem de Exibição</label>
+              <label className="text-xs font-semibold uppercase text-admin-text-muted">Ordem de Exibição</label>
               <input
+                data-testid="category-create-order-input"
                 type="number"
                 value={newOrder}
                 onChange={(e) => setNewOrder(e.target.value)}
-                className="w-full bg-[#140e0b] border border-[#3d2f26] focus:border-[#d9822b] text-[#f4efe8] p-3 rounded-xl text-sm focus:outline-none"
+                className="w-full bg-admin-bg border border-admin-border-strong focus:border-admin-accent text-admin-text p-3 rounded-admin-input text-sm focus:outline-none"
               />
             </div>
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            <label className="flex items-center gap-2 text-sm text-[#e6dad0] cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-admin-text-secondary cursor-pointer">
               <input
+                data-testid="category-create-active-checkbox"
                 type="checkbox"
                 checked={newActive}
                 onChange={(e) => setNewActive(e.target.checked)}
-                className="accent-[#d9822b]"
+                className="accent-admin-accent"
               />
               <span>Categoria Ativa no Cardápio</span>
             </label>
 
             <button
               type="submit"
+              data-testid="category-create-submit-button"
               disabled={saving}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#d9822b] hover:bg-[#c2711e] text-white font-semibold rounded-xl text-sm cursor-pointer disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold rounded-admin-button text-sm cursor-pointer disabled:opacity-50"
             >
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               <span>Salvar Categoria</span>
@@ -209,22 +216,22 @@ export default function AdminCategoriesPage() {
       )}
 
       {/* Categories Table */}
-      <div className="bg-[#1e1713] border border-[#3d2f26] rounded-2xl shadow-xl overflow-hidden">
+      <div data-testid="categories-table-panel" className="bg-admin-surface-raised border border-admin-border-strong rounded-admin-panel shadow-xl overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-[#b8a698] flex items-center justify-center gap-3">
-            <Loader2 className="w-6 h-6 animate-spin text-[#d9822b]" />
+          <div className="p-12 text-center text-admin-text-secondary flex items-center justify-center gap-3">
+            <Loader2 className="w-6 h-6 animate-spin text-admin-accent" />
             <span>Carregando categorias...</span>
           </div>
         ) : categories.length === 0 ? (
-          <div className="p-12 text-center text-[#8c786a] space-y-2">
-            <FolderTree className="w-12 h-12 text-[#8c786a] mx-auto" />
-            <p className="font-medium text-[#f4efe8]">Nenhuma categoria cadastrada</p>
+          <div className="p-12 text-center text-admin-text-muted space-y-2">
+            <FolderTree className="w-12 h-12 text-admin-text-muted mx-auto" />
+            <p className="font-medium text-admin-text">Nenhuma categoria cadastrada</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-[#2d231c] bg-[#1a1410] text-xs font-semibold uppercase text-[#8c786a]">
+                <tr className="border-b border-admin-border bg-admin-surface text-xs font-semibold uppercase text-admin-text-muted">
                   <th className="py-3.5 px-4">Ordem</th>
                   <th className="py-3.5 px-4">Nome da Categoria</th>
                   <th className="py-3.5 px-4">Slug</th>
@@ -232,53 +239,58 @@ export default function AdminCategoriesPage() {
                   <th className="py-3.5 px-4 text-right">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#2d231c]">
+              <tbody className="divide-y divide-admin-border">
                 {categories.map((cat) => {
                   const isEditing = editingId === cat.id;
 
                   return (
-                    <tr key={cat.id} className="hover:bg-[#241c16] transition-colors">
+                    <tr key={cat.id} data-testid={`category-row-${cat.id}`} className="hover:bg-admin-surface-hover transition-colors">
                       {isEditing ? (
                         <>
                           <td className="py-3.5 px-4">
                             <input
+                              data-testid={`category-edit-order-${cat.id}`}
                               type="number"
                               value={editOrder}
                               onChange={(e) => setEditOrder(e.target.value)}
-                              className="w-16 bg-[#140e0b] border border-[#3d2f26] p-1.5 rounded-lg text-xs"
+                              className="w-16 bg-admin-bg border border-admin-border-strong p-1.5 rounded-admin-input text-xs"
                             />
                           </td>
                           <td className="py-3.5 px-4">
                             <input
+                              data-testid={`category-edit-name-${cat.id}`}
                               type="text"
                               value={editName}
                               onChange={(e) => setEditName(e.target.value)}
-                              className="w-full bg-[#140e0b] border border-[#3d2f26] p-1.5 rounded-lg text-xs"
+                              className="w-full bg-admin-bg border border-admin-border-strong p-1.5 rounded-admin-input text-xs"
                             />
                           </td>
                           <td className="py-3.5 px-4">
                             <input
+                              data-testid={`category-edit-slug-${cat.id}`}
                               type="text"
                               value={editSlug}
                               onChange={(e) => setEditSlug(e.target.value)}
-                              className="w-full bg-[#140e0b] border border-[#3d2f26] p-1.5 rounded-lg text-xs font-mono"
+                              className="w-full bg-admin-bg border border-admin-border-strong p-1.5 rounded-admin-input text-xs font-mono"
                             />
                           </td>
                           <td className="py-3.5 px-4">
-                            <span className="text-xs text-[#8c786a]">Editando...</span>
+                            <span className="text-xs text-admin-text-muted">Editando...</span>
                           </td>
                           <td className="py-3.5 px-4 text-right">
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={handleEditSubmit}
+                                data-testid={`category-edit-save-${cat.id}`}
                                 disabled={saving}
-                                className="px-3 py-1 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-semibold"
+                                className="px-3 py-1 bg-status-success hover:bg-status-success/80 text-white rounded-admin-button text-xs font-semibold"
                               >
                                 Salvar
                               </button>
                               <button
                                 onClick={() => setEditingId(null)}
-                                className="px-3 py-1 bg-[#241c16] text-[#b8a698] rounded-lg text-xs"
+                                data-testid={`category-edit-cancel-${cat.id}`}
+                                className="px-3 py-1 bg-admin-surface-hover text-admin-text-secondary rounded-admin-button text-xs"
                               >
                                 Cancelar
                               </button>
@@ -287,21 +299,22 @@ export default function AdminCategoriesPage() {
                         </>
                       ) : (
                         <>
-                          <td className="py-3.5 px-4 font-mono text-xs text-[#8c786a]">
+                          <td className="py-3.5 px-4 font-mono text-xs text-admin-text-muted">
                             #{cat.displayOrder}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-[#f4efe8]">
+                          <td data-testid={`category-name-${cat.id}`} className="py-3.5 px-4 font-bold text-admin-text">
                             {cat.name}
                           </td>
-                          <td className="py-3.5 px-4 font-mono text-xs text-[#b8a698]">
+                          <td className="py-3.5 px-4 font-mono text-xs text-admin-text-secondary">
                             {cat.slug}
                           </td>
                           <td className="py-3.5 px-4">
                             <span
-                              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
+                              data-testid={`category-status-${cat.id}`}
+                              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-admin-badge text-xs font-semibold ${
                                 cat.active
-                                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
-                                  : 'bg-red-500/15 text-red-400 border border-red-500/30'
+                                  ? 'bg-status-success/15 text-status-success border border-status-success/30'
+                                  : 'bg-status-danger/15 text-status-danger border border-status-danger/30'
                               }`}
                             >
                               {cat.active ? (
@@ -319,17 +332,19 @@ export default function AdminCategoriesPage() {
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => startEdit(cat)}
-                                className="p-2 bg-[#241c16] hover:bg-[#2d231c] text-[#d9822b] border border-[#3d2f26] rounded-xl text-xs transition-all cursor-pointer"
+                                data-testid={`category-edit-${cat.id}`}
+                                className="p-2 bg-admin-surface-hover hover:bg-admin-border text-admin-accent border border-admin-border-strong rounded-admin-button text-xs transition-all cursor-pointer"
                                 title="Editar Categoria"
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={() => handleToggleActive(cat)}
-                                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer border ${
+                                data-testid={`category-toggle-status-${cat.id}`}
+                                className={`px-3 py-1.5 rounded-admin-button text-xs font-semibold transition-all cursor-pointer border ${
                                   cat.active
-                                    ? 'bg-red-950/30 text-red-300 border-red-800/40 hover:bg-red-900/40'
-                                    : 'bg-emerald-950/30 text-emerald-300 border-emerald-800/40 hover:bg-emerald-900/40'
+                                    ? 'bg-status-danger/10 text-status-danger border-status-danger/30 hover:bg-status-danger/15'
+                                    : 'bg-status-success/10 text-status-success border-status-success/30 hover:bg-status-success/15'
                                 }`}
                               >
                                 {cat.active ? 'Desativar' : 'Ativar'}

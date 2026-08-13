@@ -3,6 +3,37 @@
 @import 'swiper/css/navigation';
 @import 'swiper/css/pagination';
 
+@theme inline {
+    --color-admin-bg: var(--admin-bg);
+    --color-admin-surface: var(--admin-surface);
+    --color-admin-surface-raised: var(--admin-surface-raised);
+    --color-admin-surface-hover: var(--admin-surface-hover);
+    --color-admin-border: var(--admin-border);
+    --color-admin-border-strong: var(--admin-border-strong);
+    --color-admin-text: var(--admin-text);
+    --color-admin-text-secondary: var(--admin-text-secondary);
+    --color-admin-text-muted: var(--admin-text-muted);
+    --color-admin-accent: var(--admin-accent);
+    --color-admin-accent-hover: var(--admin-accent-hover);
+    --color-status-success: var(--status-success);
+    --color-status-warning: var(--status-warning);
+    --color-status-danger: var(--status-danger);
+    --color-status-info: var(--status-info);
+    --color-status-neutral: var(--status-neutral);
+
+    --radius-admin-input: var(--admin-radius-input);
+    --radius-admin-button: var(--admin-radius-button);
+    --radius-admin-card: var(--admin-radius-card);
+    --radius-admin-panel: var(--admin-radius-panel);
+    --radius-admin-modal: var(--admin-radius-modal);
+    --radius-admin-badge: var(--admin-radius-badge);
+
+    --spacing-admin-card: var(--admin-card-padding);
+    --spacing-admin-section: var(--admin-section-gap);
+    --spacing-admin-field: var(--admin-field-gap);
+    --spacing-admin-page: var(--admin-page-padding);
+}
+
 /* ============================================================
    Pudim & CIA — Luxury Patisserie Design System
    Aesthetic: Orgânico & Terroso
@@ -24,6 +55,46 @@
     --error-bg:       rgba(168, 72, 50, 0.08);
     --whatsapp:       #25D366;
     --whatsapp-dark:  #1db954;
+
+    /* Admin — Dark Espresso */
+    --admin-bg:             #110D0A;
+    --admin-surface:        #1A1410;
+    --admin-surface-raised: #1E1713;
+    --admin-surface-hover:  #241C16;
+    --admin-border:         #2D231C;
+    --admin-border-strong:  #3D2F26;
+    --admin-text:           #F4EFE8;
+    --admin-text-secondary: #B8A698;
+    --admin-text-muted:     #8C786A;
+    --admin-accent:         #D9822B;
+    --admin-accent-hover:   #C2711E;
+
+    --status-success: #34D399;
+    --status-warning: #FBBF24;
+    --status-danger:  #F87171;
+    --status-info:    #60A5FA;
+    --status-neutral: #8C786A;
+
+    --admin-radius-input:  8px;
+    --admin-radius-button: 10px;
+    --admin-radius-card:   12px;
+    --admin-radius-panel:  16px;
+    --admin-radius-modal:  16px;
+    --admin-radius-badge:  9999px;
+
+    --admin-space-1: 4px;
+    --admin-space-2: 8px;
+    --admin-space-3: 12px;
+    --admin-space-4: 16px;
+    --admin-space-5: 20px;
+    --admin-space-6: 24px;
+    --admin-space-8: 32px;
+    --admin-space-10: 40px;
+    --admin-space-12: 48px;
+    --admin-card-padding: 24px;
+    --admin-section-gap: 32px;
+    --admin-field-gap: 16px;
+    --admin-page-padding: 32px;
 
     /* Aliases for gradual compatibility */
     --cream:          var(--bg-primary);
