@@ -35,8 +35,14 @@ export default function AdminNav() {
     loadUser();
   }, []);
 
-  // Hide nav on login page
-  if (pathname === '/admin/login') return null;
+  const publicAuthPaths = [
+    '/admin/login',
+    '/admin/forgot-password',
+    '/admin/reset-password',
+  ];
+
+  // Authentication and recovery screens must not expose private navigation.
+  if (publicAuthPaths.includes(pathname)) return null;
 
   const handleLogout = async () => {
     await signOutAdmin();
