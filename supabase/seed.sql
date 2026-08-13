@@ -33,12 +33,14 @@ INSERT INTO categories (
   id,
   name,
   slug,
-  display_order
+  display_order,
+  active
 ) VALUES (
   '11111111-1111-1111-1111-111111111111',
   'Especialidades',
   'especialidades',
-  1
+  1,
+  TRUE
 ) ON CONFLICT (slug) DO NOTHING;
 
 -- 3. PRODUCTS SEED

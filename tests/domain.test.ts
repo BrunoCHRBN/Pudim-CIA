@@ -71,7 +71,7 @@ describe('Domain Model & Cent Operations', () => {
       },
     ];
 
-    const totalCents = cart.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
+    const totalCents = cart.reduce((sum, item) => sum + (item.priceCents || 0) * item.quantity, 0);
     expect(totalCents).toBe(4900); // 3400 + 1500 = 4900 centavos
     expect(formatCentsToBRL(totalCents)).toBe('R$ 49,00');
   });

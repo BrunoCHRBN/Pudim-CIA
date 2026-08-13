@@ -4,13 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
 import { Product, CartItem } from '@/types/domain';
 import { formatCentsToBRL } from '@/lib/formatters';
+import { useCart } from '@/context/CartContext';
 
 interface ItemModalProps {
   isOpen: boolean;
   productId: string | null;
   products: Product[];
   onClose: () => void;
-  onAddToCart: (item: Omit<CartItem, 'id'>) => void;
+  onAddToCart?: (item: Omit<CartItem, 'id'>) => void;
 }
 
 export function ItemModal({
@@ -20,6 +21,7 @@ export function ItemModal({
   onClose,
   onAddToCart,
 }: ItemModalProps) {
+  const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState('');
   const [observations, setObservations] = useState('');
@@ -83,13 +85,28 @@ export function ItemModal({
       return;
     }
 
-    onAddToCart({
-      productId: product.id,
-      variantId: selectedVariant.id,
-      priceCents: unitPriceCents,
-      quantity,
-      observations: observations.trim(),
-    });
+    addItem(
+      {
+        productId: product.id,
+        variantId: selectedVariant.id,
+        quantity,
+        observations: observations.trim(),
+        cachedProductName: product.name,
+        cachedVariantName: selectedVariant.name,
+        cachedUnitPriceCents: unitPriceCents,
+      },
+      products
+    );
+
+    if (onAddToCart) {
+      onAddToCart({
+        productId: product.id,
+        variantId: selectedVariant.id,
+        priceCents: unitPriceCents,
+        quantity,
+        observations: observations.trim(),
+      });
+    }
 
     onClose();
   };

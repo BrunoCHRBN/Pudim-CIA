@@ -8,10 +8,13 @@ import {
   BusinessSettings,
   DeliveryMethod,
   PaymentMethod,
+  CheckoutData,
   NAME_STORAGE_KEY,
 } from '@/types/domain';
 import { formatCentsToBRL } from '@/lib/formatters';
 import { generatePixEMV } from '@/lib/pix';
+import { calculateCheckoutTotal, validateCheckoutData } from '@/lib/checkout';
+import { buildWhatsAppOrderMessage, buildWhatsAppUrl } from '@/lib/whatsapp';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -41,7 +44,7 @@ export function CheckoutModal({
   const [isCopying, setIsCopying] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const totalCents = cart.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
+  const totalCents = calculateCheckoutTotal(cart, products, deliveryMethod, settings);
 
   useEffect(() => {
     if (isOpen) {
@@ -86,93 +89,32 @@ export function CheckoutModal({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    let hasError = false;
-    setNameError('');
-    setAddressError('');
+    const checkoutData: CheckoutData = {
+      clientName,
+      deliveryMethod,
+      deliveryAddress,
+      paymentMethod,
+      changeAmount,
+    };
 
-    if (!clientName.trim()) {
-      setNameError('Por favor, informe seu nome.');
-      hasError = true;
-    }
+    const { isValid, errors } = validateCheckoutData(checkoutData);
 
-    if (deliveryMethod === 'entrega' && !deliveryAddress.trim()) {
-      setAddressError('Por favor, informe o endereço de entrega.');
-      hasError = true;
-    }
+    setNameError(errors.clientName || '');
+    setAddressError(errors.deliveryAddress || '');
 
-    if (cart.length === 0 || hasError) return;
+    if (!isValid || cart.length === 0) return;
 
     localStorage.setItem(NAME_STORAGE_KEY, clientName.trim());
-
     setIsSubmitting(true);
 
-    const totalStr = formatCentsToBRL(totalCents);
-    const emojiDetalhes = '\uD83C\uDF6E';
-    const emojiCliente = '\uD83D\uDC64';
-    const emojiEntrega = '\uD83D\uDEF5';
-    const emojiRetirada = '\uD83D\uDECD';
-    const emojiPagamento = '\uD83D\uDCB3';
-    const emojiPix = '\uD83D\uDD11';
-
-    const deliveryIcon = deliveryMethod === 'entrega' ? emojiEntrega : emojiRetirada;
-    const deliveryMethodStr =
-      deliveryMethod === 'entrega' ? 'Entrega (Delivery)' : 'Retirar na Loja';
-
-    let paymentMethodStr = '';
-    if (paymentMethod === 'pix') {
-      paymentMethodStr = 'Pix (Pago via Copia e Cola do site)';
-    } else if (paymentMethod === 'cartao') {
-      paymentMethodStr = 'Cartão';
-    } else {
-      paymentMethodStr = `Dinheiro (Troco para: ${
-        changeAmount.trim() ? changeAmount.trim() : 'Não necessário'
-      })`;
-    }
-
-    let msg = `Olá, ${settings.storeName}! Gostaria de fazer um pedido através do site:\n\n`;
-    msg += `${emojiDetalhes} *DETALHES DO PEDIDO*\n`;
-    cart.forEach((item, idx) => {
-      const product = products.find((p) => p.id === item.productId);
-      const variant = product?.variants.find((v) => v.id === item.variantId);
-      const productName = product?.name || 'Produto';
-      const variantName = variant?.name || 'Padrão';
-      const subtotalCents = item.priceCents * item.quantity;
-
-      msg += `\n*Item ${idx + 1}:* ${productName}\n`;
-      msg += `*Quantidade:* ${item.quantity}x\n`;
-      msg += `*Opção/Sabor:* ${variantName}\n`;
-      msg += `*Subtotal:* ${formatCentsToBRL(subtotalCents)}\n`;
-      if (item.observations) {
-        msg += `*Obs. do item:* ${item.observations}\n`;
-      }
+    const message = buildWhatsAppOrderMessage({
+      cart,
+      products,
+      checkoutData,
+      settings,
     });
-    msg += `\n*Valor Total:* ${totalStr}\n\n`;
-    msg += `---\n`;
-    msg += `${emojiCliente} *CLIENTE*\n`;
-    msg += `*Nome:* ${clientName.trim()}\n\n`;
-    msg += `---\n`;
-    msg += `${deliveryIcon} *ENVIO*\n`;
-    msg += `*Tipo:* ${deliveryMethodStr}\n`;
-    if (deliveryMethod === 'entrega') {
-      msg += `*Endereço:* ${deliveryAddress.trim()}\n`;
-    }
-    msg += `\n---\n`;
-    msg += `${emojiPagamento} *PAGAMENTO*\n`;
-    msg += `*Forma:* ${paymentMethodStr}\n`;
 
-    if (paymentMethod === 'pix') {
-      const pixCode = generatePixEMV(
-        settings.pixKey,
-        settings.pixBeneficiary,
-        settings.pixCity,
-        totalCents
-      );
-      msg += `\n---\n${emojiPix} *CÓDIGO PIX COPIA E COLA*\n${pixCode}`;
-    }
-
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${settings.whatsappPhone}&text=${encodeURIComponent(
-      msg
-    )}`;
+    const whatsappUrl = buildWhatsAppUrl(settings.whatsappPhone, message);
 
     onClearCart();
     onClose();
@@ -422,7 +364,7 @@ export function CheckoutModal({
                 <span>Enviar Pedido</span>
                 <Send className="btn-icon" size={18} />
               </>
-            )}
+            ) }
           </button>
         </form>
       </div>

@@ -2,29 +2,24 @@
 
 import React, { useEffect } from 'react';
 import { X, ArrowRight } from 'lucide-react';
-import { CartItem, Product } from '@/types/domain';
+import { Product } from '@/types/domain';
+import { useCart } from '@/context/CartContext';
 import { formatCentsToBRL } from '@/lib/formatters';
 
 interface CartDrawerProps {
   isOpen: boolean;
-  cart: CartItem[];
   products: Product[];
   onClose: () => void;
-  onUpdateQty: (id: string, delta: number) => void;
-  onRemoveItem: (id: string) => void;
   onOpenCheckout: () => void;
 }
 
 export function CartDrawer({
   isOpen,
-  cart,
   products,
   onClose,
-  onUpdateQty,
-  onRemoveItem,
   onOpenCheckout,
 }: CartDrawerProps) {
-  const totalCents = cart.reduce((sum, item) => sum + item.priceCents * item.quantity, 0);
+  const { items, increment, decrement, removeItem, getAuthoritativePriceCents, displayTotal } = useCart();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -72,19 +67,20 @@ export function CartDrawer({
         </div>
 
         <div className="cart-drawer-body" id="cart-items" data-testid="cart-items">
-          {cart.length === 0 ? (
+          {items.length === 0 ? (
             <p className="cart-empty">
               Seu carrinho está vazio.
               <br />
               Escolha uma especialidade para começar.
             </p>
           ) : (
-            cart.map((item) => {
+            items.map((item) => {
               const product = products.find((p) => p.id === item.productId);
               const variant = product?.variants.find((v) => v.id === item.variantId);
-              const productName = product?.name || 'Produto';
-              const variantName = variant?.name || 'Padrão';
-              const itemTotalCents = item.priceCents * item.quantity;
+              const productName = product?.name || item.cachedProductName || 'Produto';
+              const variantName = variant?.name || item.cachedVariantName || 'Padrão';
+              const unitPrice = getAuthoritativePriceCents(item, products);
+              const itemTotalCents = unitPrice * item.quantity;
 
               return (
                 <div
@@ -108,7 +104,7 @@ export function CartDrawer({
                         data-action="dec"
                         data-testid={`cart-dec-${item.id}`}
                         aria-label="Diminuir"
-                        onClick={() => onUpdateQty(item.id, -1)}
+                        onClick={() => decrement(item.id)}
                       >
                         −
                       </button>
@@ -118,7 +114,7 @@ export function CartDrawer({
                         data-action="inc"
                         data-testid={`cart-inc-${item.id}`}
                         aria-label="Aumentar"
-                        onClick={() => onUpdateQty(item.id, 1)}
+                        onClick={() => increment(item.id)}
                       >
                         +
                       </button>
@@ -128,7 +124,7 @@ export function CartDrawer({
                       className="cart-item-remove"
                       data-action="remove"
                       data-testid={`cart-remove-${item.id}`}
-                      onClick={() => onRemoveItem(item.id)}
+                      onClick={() => removeItem(item.id)}
                     >
                       Remover
                     </button>
@@ -143,7 +139,7 @@ export function CartDrawer({
           <div className="cart-subtotal">
             <span>Subtotal</span>
             <strong id="cart-subtotal" data-testid="cart-subtotal">
-              {formatCentsToBRL(totalCents)}
+              {formatCentsToBRL(displayTotal)}
             </strong>
           </div>
           <button
@@ -151,9 +147,9 @@ export function CartDrawer({
             className="btn-submit-order"
             id="btn-checkout"
             data-testid="btn-checkout"
-            disabled={cart.length === 0}
+            disabled={items.length === 0}
             onClick={() => {
-              if (cart.length > 0) {
+              if (items.length > 0) {
                 onClose();
                 onOpenCheckout();
               }

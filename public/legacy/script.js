@@ -11,7 +11,7 @@ const CART_STORAGE_KEY = 'pudimecia_cart_v1';
 const NAME_STORAGE_KEY = 'pudimecia_client_name';
 const PIX_PLACEHOLDER = 'suachave@email.com';
 
-const PRODUCT_CONFIG = {
+const DYNAMIC_CATALOG = {
     'Pudim Clássico': {
         price: 17.00,
         options: ['Tradicional de Leite Moça']
@@ -393,7 +393,7 @@ function initItemModal() {
 
     function populateOptions(productName) {
         dropdownMenu.innerHTML = '';
-        const options = PRODUCT_CONFIG[productName].options;
+        const options = (DYNAMIC_CATALOG[productName] || {}).options || [];
         options.forEach(opt => {
             const item = document.createElement('div');
             item.className = 'custom-dropdown-item';
@@ -416,7 +416,7 @@ function initItemModal() {
     }
 
     function openItemModal(productName, price) {
-        if (!PRODUCT_CONFIG[productName]) return;
+        if (!DYNAMIC_CATALOG[productName]) return;
         lastFocus = document.activeElement;
         currentProduct = productName;
         currentPrice = price;

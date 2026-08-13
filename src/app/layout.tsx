@@ -55,6 +55,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { CartProvider } from "@/context/CartContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -62,7 +64,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${playfair.variable} ${jakarta.variable}`}>
-      <body style={{ fontFamily: "var(--font-sans)" }}>{children}</body>
+      <body style={{ fontFamily: "var(--font-sans)" }}>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

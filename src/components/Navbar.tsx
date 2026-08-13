@@ -4,12 +4,16 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { MessageCircle, ShoppingBag, Menu, X } from 'lucide-react';
 
+import { useCart } from '@/context/CartContext';
+
 interface NavbarProps {
-  cartCount: number;
+  cartCount?: number;
   onOpenCart: () => void;
 }
 
-export function Navbar({ cartCount, onOpenCart }: NavbarProps) {
+export function Navbar({ cartCount: passedCartCount, onOpenCart }: NavbarProps) {
+  const { cartCount: contextCartCount } = useCart();
+  const cartCount = passedCartCount ?? contextCartCount;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

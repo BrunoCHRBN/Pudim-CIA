@@ -65,4 +65,22 @@ describe('Supabase Migrations & Seed Verification', () => {
     expect(sql).toContain('Pudim & CIA');
     expect(sql).toContain('5516991359739');
   });
+
+  it('contains 20260812000003_auth_admin_rls.sql adding active column, owner role, and updated RLS', () => {
+    const adminRlsPath = path.join(
+      rootDir,
+      'supabase',
+      'migrations',
+      '20260812000003_auth_admin_rls.sql'
+    );
+    expect(fs.existsSync(adminRlsPath)).toBe(true);
+    const sql = fs.readFileSync(adminRlsPath, 'utf8');
+
+    expect(sql).toContain('ADD COLUMN IF NOT EXISTS active');
+    expect(sql).toContain("CHECK (role IN ('owner', 'admin', 'customer'))");
+    expect(sql).toContain('is_admin_or_owner()');
+    expect(sql).toContain('Public can read active categories');
+    expect(sql).toContain('Public can read published products');
+    expect(sql).toContain('Admins and owners can manage business settings');
+  });
 });
